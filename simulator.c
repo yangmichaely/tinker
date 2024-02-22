@@ -130,8 +130,12 @@ void brnz(uint64_t rd, uint64_t rs){
 
 int call(uint64_t rd, uint64_t rs, uint64_t rt){
     if(memCheck(cpu.regs[31].uinteger64 - 8) == 0){
-        cpu.mem[cpu.regs[31].uinteger64 - 8] = cpu.pc + 4;
-        cpu.pc += 4;
+        uint32_t value = (uint32_t) cpu.pc + 4;
+        cpu.mem[cpu.regs[31].uinteger64 - 8] = (0xff000000 & value) >> 24;
+        cpu.mem[cpu.regs[31].uinteger64 - 7] = (0x00ff0000 & value) >> 16;
+        cpu.mem[cpu.regs[31].uinteger64 - 6] = (0x0000ff00 & value) >> 8;
+        cpu.mem[cpu.regs[31].uinteger64 - 5] = 0xff & value;
+        cpu.pc = cpu.regs[rd].uinteger64;
         return 0;
     }
     return -1;
@@ -139,7 +143,16 @@ int call(uint64_t rd, uint64_t rs, uint64_t rt){
 
 int ret(){
     if(memCheck(cpu.regs[31].uinteger64 - 8) == 0){
-        cpu.pc = cpu.mem[cpu.regs[31].uinteger64 - 8];
+        uint64_t val = 0;
+        val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 4] << 56;
+        val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 3] << 48;
+        val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 2] << 40;
+        val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 1] << 32;
+        val |= cpu.mem[cpu.regs[31].uinteger64 - 8] << 24;
+        val |= cpu.mem[cpu.regs[31].uinteger64 - 7] << 16;
+        val |= cpu.mem[cpu.regs[31].uinteger64 - 6] << 8;
+        val |= cpu.mem[cpu.regs[31].uinteger64 - 5];
+        cpu.pc = val;
         return 0;
     }
     return -1;
@@ -185,7 +198,15 @@ void movSetBits(uint64_t rd, uint64_t l){
 
 int movReadRegStoreMem(uint64_t rd, uint64_t rs, uint64_t l){
     if(memCheck(cpu.regs[rd].uinteger64 + l) == 0){
-        cpu.mem[cpu.regs[rd].uinteger64 + l] = cpu.regs[rs].uinteger64;
+        uint64_t value = cpu.regs[rs].uinteger64;
+        cpu.mem[cpu.regs[rd].uinteger64 + l] = (0xff00000000000000 & value) >> 56;
+        cpu.mem[cpu.regs[rd].uinteger64 + l + 1] = (0x00ff000000000000 & value) >> 48;
+        cpu.mem[cpu.regs[rd].uinteger64 + l + 2] = (0x0000ff0000000000 & value) >> 40;
+        cpu.mem[cpu.regs[rd].uinteger64 + l + 3] = 0x000000ff00000000 & value >> 32;
+        cpu.mem[cpu.regs[rd].uinteger64 + l] = (0x00000000ff000000 & value) >> 24;
+        cpu.mem[cpu.regs[rd].uinteger64 + l + 1] = (0x0000000000ff0000 & value) >> 16;
+        cpu.mem[cpu.regs[rd].uinteger64 + l + 2] = (0x000000000000ff00 & value) >> 8;
+        cpu.mem[cpu.regs[rd].uinteger64 + l + 3] = 0xff & value;
         cpu.pc += 4;
         return 0;
     }
