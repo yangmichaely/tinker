@@ -9,6 +9,20 @@
 
 CPU cpu;
 
+int main(int argc, char** argv){
+    FILE* f = fopen(argv[1], "rb\0");
+    if(f == NULL){
+        fprintf(stderr, "%s", "Invalid tko filepath\n");
+        return -1;
+    }
+    if (readBinary(f) != 0){
+        fclose(f);
+        return -1;
+    }
+    fclose(f);
+    return 0;
+}
+
 int memCheck(uint64_t index){
     if(index < 0 || index >= MEM_SIZE){
         return -1;

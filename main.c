@@ -14,10 +14,10 @@ int main(int argc, char** argv){
         fprintf(stderr, "%s", "Invalid tinker filepath\n");
         return -1;
     }
-    if(firstPass(fp) == 1){
+    if(firstPass(fp) != 1){
         //printf("successful first pass\n");
-    }
-    else{
+    // }
+    // else{
         //printf("failed first pass\n");
         fclose(fp);
         return -1;

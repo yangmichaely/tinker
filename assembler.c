@@ -21,6 +21,30 @@ int lines;
 int avail;
 addr* head = NULL;
 
+int main(int argc, char** argv){
+    FILE* fp = fopen(argv[1], "r\0");
+    if(fp == NULL){
+        fprintf(stderr, "%s", "Invalid tinker filepath\n");
+        return -1;
+    }
+    if(firstPass(fp) != 1){
+        fclose(fp);
+        return -1;
+    }
+    char* outFile = (char*) calloc(sizeof(char) * strlen(argv[1]) + 2, 1);
+    for(int i = 0; i < strlen(argv[1]); i++){
+        outFile[i] = argv[1][i];
+    }
+    outFile[strlen(argv[1])] = 'o';
+    outFile[strlen(argv[1]) + 1] = '\0';
+    if(read(fp, outFile) != 1){
+        fclose(fp);
+        return -1;
+    }
+    free(outFile);
+    fclose(fp);
+}
+
 void insert(char* name, int address, int nameLength){
     if(head != NULL){
         addr* lk = (addr*) malloc(sizeof(addr));
