@@ -1,0 +1,3 @@
+.code
+	out r0, r1
+	halt

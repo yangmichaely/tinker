@@ -1,0 +1,3 @@
+.code
+	brnz r0, r1
+	halt

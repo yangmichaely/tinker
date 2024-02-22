@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "ranges": "c",
+        "stdlib.h": "c",
+        "string_view": "c",
+        "*.tcc": "c",
+        "tuple": "c",
+        "ctype.h": "c"
+    }
+}

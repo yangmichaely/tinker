@@ -1,0 +1,3 @@
+.code
+	mulf r0, r1, r3
+	halt

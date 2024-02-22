@@ -1,0 +1,3 @@
+.code
+	add r0, r1, r3
+	halt

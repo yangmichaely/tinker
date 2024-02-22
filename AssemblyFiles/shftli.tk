@@ -1,0 +1,3 @@
+.code
+	shftli r0, 1
+	halt

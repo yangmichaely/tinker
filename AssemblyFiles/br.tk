@@ -1,0 +1,3 @@
+.code
+	br r0
+	halt

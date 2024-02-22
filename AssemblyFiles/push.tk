@@ -1,0 +1,3 @@
+.code
+	push r0
+	halt

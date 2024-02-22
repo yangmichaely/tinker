@@ -1,0 +1,3 @@
+.code
+	mov r0, 100
+	halt

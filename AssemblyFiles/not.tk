@@ -1,0 +1,3 @@
+.code
+	not r0, r1
+	halt

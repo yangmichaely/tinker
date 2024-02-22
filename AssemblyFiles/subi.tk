@@ -1,0 +1,3 @@
+.code
+	subi r0, 1
+	halt
