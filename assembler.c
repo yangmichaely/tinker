@@ -22,6 +22,7 @@ int avail;
 addr* head = NULL;
 
 int main(int argc, char** argv){
+    printf("FILE: %s\n", argv[1]);
     FILE* fp = fopen(argv[1], "r\0");
     if(fp == NULL){
         fprintf(stderr, "%s", "Invalid tinker filepath\n");

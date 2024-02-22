@@ -10,12 +10,13 @@
 CPU cpu;
 
 int main(int argc, char** argv){
+    printf("FILE: %s\n", argv[1]);
     FILE* f = fopen(argv[1], "rb\0");
     if(f == NULL){
         fprintf(stderr, "%s", "Invalid tko filepath\n");
         return -1;
     }
-    if (readBinary(f) != 0){
+    if(readBinary(f) != 0){
         fclose(f);
         return -1;
     }
