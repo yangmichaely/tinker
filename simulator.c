@@ -403,11 +403,11 @@ int readBinary(FILE* f){
         uint64_t rs = (instr >> 17) & 0x1f;
         uint64_t rt = (instr >> 12) & 0x1f;
         uint64_t l = instr & 0xfff;
-        // printf("opcode: %ld\n", opcode);
-        // printf("rd: %ld\n", rd);
-        // printf("rs: %ld\n", rs);
-        // printf("rt: %ld\n", rt);
-        // printf("l: %ld\n", l);
+        printf("opcode: %ld\n", opcode);
+        printf("rd: %ld\n", rd);
+        printf("rs: %ld\n", rs);
+        printf("rt: %ld\n", rt);
+        printf("l: %ld\n", l);
         check = interpret(opcode, rd, rs, rt, l);
         if(instrCheck(opcode, rd, rs, rt, l) == -1 || check == -1){
             fprintf(stderr, "%s\n", "Simulation error");

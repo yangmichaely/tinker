@@ -6,29 +6,29 @@
 	CompilerName="/lusr/bin/g++-11"
 	CompilerVersion=""
 	OSName="Linux"
-	Hostname="special-k"
-	OSRelease="5.15.0-92-generic"
-	OSVersion="#102~20.04.1-Ubuntu SMP Mon Jan 15 13:09:14 UTC 2024"
+	Hostname="sun-tzu"
+	OSRelease="5.4.0-170-generic"
+	OSVersion="#188-Ubuntu SMP Wed Jan 10 09:51:01 UTC 2024"
 	OSPlatform="x86_64"
 	Is64Bits="1"
 	VendorString="GenuineIntel"
 	VendorID="Intel Corporation"
 	FamilyID="6"
-	ModelID="165"
-	ProcessorCacheSize="16384"
-	NumberOfLogicalCPU="16"
-	NumberOfPhysicalCPU="8"
+	ModelID="94"
+	ProcessorCacheSize="8192"
+	NumberOfLogicalCPU="8"
+	NumberOfPhysicalCPU="4"
 	TotalVirtualMemory="3811"
-	TotalPhysicalMemory="31805"
+	TotalPhysicalMemory="15888"
 	LogicalProcessorsPerPhysical="2"
-	ProcessorClockFrequency="3400"
+	ProcessorClockFrequency="3331.82"
 	>
 	<Testing>
-		<StartDateTime>Feb 21 22:30 CST</StartDateTime>
-		<StartTestTime>1708576243</StartTestTime>
+		<StartDateTime>Feb 22 14:11 CST</StartDateTime>
+		<StartTestTime>1708632713</StartTestTime>
 		<TestList/>
-		<EndDateTime>Feb 21 22:30 CST</EndDateTime>
-		<EndTestTime>1708576243</EndTestTime>
+		<EndDateTime>Feb 22 14:11 CST</EndDateTime>
+		<EndTestTime>1708632713</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>

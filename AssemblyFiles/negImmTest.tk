@@ -1,0 +1,3 @@
+.code
+	mov r5, (r14)(-4)
+	halt

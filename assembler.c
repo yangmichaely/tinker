@@ -14,8 +14,8 @@ char* VALID_COMMANDS[36] = {"add", "addi", "sub", "subi", "mul", "div", "and", "
 
 char* VALID_PARAMETERS[36] = {"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1])$",
 "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1])$", 
-"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [0-9]+|:[a-zA-Z0-9_-]+$", "^[0-9]+|:[a-zA-Z0-9_-]+$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [(r([0-9]|1[0-9]|2[0-9]|3[0-1]))([0-9]+|:[a-zA-Z0-9_-]+)]$", 
-"^[(r([0-9]|1[0-9]|2[0-9]|3[0-1]))([0-9]+|:[a-zA-Z0-9_-]+)], r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^[a-zA-Z0-9_-]+$"};
+"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [0-9]+|:[a-zA-Z0-9_-]+$", "^[-+]?[0-9]+|:[a-zA-Z0-9_-]+$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [(r([0-9]|1[0-9]|2[0-9]|3[0-1]))([-+]?[0-9]+|:[a-zA-Z0-9_-]+)]$", 
+"^[(r([0-9]|1[0-9]|2[0-9]|3[0-1]))([-+]?[0-9]+|:[a-zA-Z0-9_-]+)], r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^[a-zA-Z0-9_-]+$"};
 
 int lines;
 int avail;
@@ -382,7 +382,7 @@ uint32_t calcShifts(uint64_t l, uint32_t rt, uint32_t rs, uint32_t rd, uint32_t 
 int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
     int x = 0;
     uint32_t instruction[4] = {cmdNum, 0, 0, 0};
-    uint64_t l = 0;
+    int64_t l = 0;
     int nextReg = 1;
     if(emptyParams == 0){
         while(x < strlen(cmdParams)) {
@@ -411,11 +411,17 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                 l = labelAddr;
             }
             else{
-                if(strlen(tmp) > 4 || atoi(tmp) > 4095 || atoi(tmp) < 0){
-                    return -1;
+                if(cmdNum == 16 || cmdNum == 21 || cmdNum == 24){
+                    if(strlen(tmp) > 5 || atoi(tmp) > 2047 || atoi(tmp) < -2048){
+                        return -1;
+                    }
                 }
-                char* end;
-                l = strtol(tmp, &end, 10);
+                else{
+                    if(strlen(tmp) > 4 || atoi(tmp) > 4095 || atoi(tmp) < 0){
+                        return -1;
+                    }
+                }
+                l = atoi(tmp);
             }
             free(tmp);
         }
