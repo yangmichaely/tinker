@@ -43,6 +43,7 @@ int main(int argc, char** argv){
     }
     free(outFile);
     fclose(fp);
+    return 0;
 }
 
 void insert(char* name, int address, int nameLength){
