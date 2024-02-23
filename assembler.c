@@ -416,9 +416,13 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                         return -1;
                     }
                 }
+                else if(cmdNum == 33){
+                    if(atoi(tmp) < 0 || atoi(tmp) > sizeof(uint64_t)){
+                        return -1;
+                    }
+                }
                 else{
                     if(atoi(tmp) > 4095 || atoi(tmp) < 0){
-                        //fprintf(stderr, "Error on line %s\n", cmdParams);
                         return -1;
                     }
                 }
