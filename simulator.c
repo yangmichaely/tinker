@@ -10,7 +10,7 @@
 CPU cpu;
 
 int main(int argc, char** argv){
-    printf("FILE: %s\n", argv[1]);
+    // printf("FILE: %s\n", argv[1]);
     FILE* f = fopen(argv[1], "rb\0");
     if(f == NULL){
         fprintf(stderr, "%s", "Invalid tko filepath\n");
@@ -404,11 +404,11 @@ int readBinary(FILE* f){
         uint64_t rs = (instr >> 17) & 0x1f;
         uint64_t rt = (instr >> 12) & 0x1f;
         uint64_t l = instr & 0xfff;
-        printf("opcode: %ld\n", opcode);
-        printf("rd: %ld\n", rd);
-        printf("rs: %ld\n", rs);
-        printf("rt: %ld\n", rt);
-        printf("l: %ld\n", l);
+        // printf("opcode: %ld\n", opcode);
+        // printf("rd: %ld\n", rd);
+        // printf("rs: %ld\n", rs);
+        // printf("rt: %ld\n", rt);
+        // printf("l: %ld\n", l);
         check = interpret(opcode, rd, rs, rt, l);
         if(check == -1){
             fprintf(stderr, "%s\n", "Simulation error");
