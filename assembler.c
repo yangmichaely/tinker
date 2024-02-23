@@ -332,7 +332,7 @@ int read(FILE* fp, char* outFile){
                     if(strcmp(cmdName, VALID_COMMANDS[h]) == 0){
                         if((strcmp(cmdName, "brr") != 0 && strcmp(cmdName, "mov") != 0) || ((strcmp(cmdName, "brr") == 0 || strcmp(cmdName, "mov") == 0) && h == check)){
                             if(splitter(cmdParams, h, emptyParams, out) == -1){
-                                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                                fprintf(stderr, "%s%d %s\n", "Error on line ", i + 1, buffer);
                                 remove(outFile);
                                 fclose(out);
                                 free(cmdParams);
@@ -411,24 +411,29 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                 l = labelAddr;
             }
             else{
+                regex_t regex;
+                regcomp(&regex, "^[-+]?[0-9]+$", REG_EXTENDED);
+                if(regexec(&regex, cmdParams, 0, NULL, 0) == 0){
+                    regfree(&regex);
+                    return -1;
+                }
+                regfree(&regex);
+                char *ptr;
+                l = strtol(tmp, &ptr, 10);
                 if(cmdNum == 16 || cmdNum == 21 || cmdNum == 24){
-                    if(atoi(tmp) > 2047 || atoi(tmp) < -2048){
+                    if(l > 2047 || l < -2048){
                         return -1;
                     }
-                    l = atoi(tmp);
                 }
                 else if(cmdNum == 33){
-                    char *ptr;
-                    l = strtol(tmp, &ptr, 10);
                     if(l < 0 || l > ULONG_MAX){
                         return -1;
                     }
                 }
                 else{
-                    if(atoi(tmp) > 4095 || atoi(tmp) < 0){
+                    if(l > 4095 || l < 0){
                         return -1;
                     }
-                    l = atoi(tmp);
                 }
             }
             free(tmp);
