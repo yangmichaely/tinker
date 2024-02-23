@@ -406,6 +406,7 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                 uint64_t labelAddr = search(label);
                 if(labelAddr == -1){
                     free(tmp);
+                    fprintf(stderr, "aError on line 1\n");
                     return -1;
                 }
                 l = labelAddr;
@@ -413,11 +414,13 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
             else{
                 if(cmdNum == 16 || cmdNum == 21 || cmdNum == 24){
                     if(atoi(tmp) > 2047 || atoi(tmp) < -2048){
+                        fprintf(stderr, "bError on line 1\n");
                         return -1;
                     }
                 }
                 else{
                     if(atoi(tmp) > 4095 || atoi(tmp) < 0){
+                        fprintf(stderr, "cError on line 1\n");
                         return -1;
                     }
                 }
