@@ -200,10 +200,10 @@ void movSetBits(uint64_t rd, uint64_t l){
 int movReadRegStoreMem(uint64_t rd, uint64_t rs, uint64_t l){
     if(memCheck(cpu.regs[rd].uinteger64 + l) == 0){
         uint64_t value = cpu.regs[rs].uinteger64;
-        cpu.mem[cpu.regs[rd].uinteger64 + l] = (0xff00000000000000 & value) >> 56;
-        cpu.mem[cpu.regs[rd].uinteger64 + l + 1] = (0x00ff000000000000 & value) >> 48;
-        cpu.mem[cpu.regs[rd].uinteger64 + l + 2] = (0x0000ff0000000000 & value) >> 40;
-        cpu.mem[cpu.regs[rd].uinteger64 + l + 3] = 0x000000ff00000000 & value >> 32;
+        cpu.mem[cpu.regs[rd].uinteger64 + l + 4] = (0xff00000000000000 & value) >> 56;
+        cpu.mem[cpu.regs[rd].uinteger64 + l + 5] = (0x00ff000000000000 & value) >> 48;
+        cpu.mem[cpu.regs[rd].uinteger64 + l + 6] = (0x0000ff0000000000 & value) >> 40;
+        cpu.mem[cpu.regs[rd].uinteger64 + l + 7] = 0x000000ff00000000 & value >> 32;
         cpu.mem[cpu.regs[rd].uinteger64 + l] = (0x00000000ff000000 & value) >> 24;
         cpu.mem[cpu.regs[rd].uinteger64 + l + 1] = (0x0000000000ff0000 & value) >> 16;
         cpu.mem[cpu.regs[rd].uinteger64 + l + 2] = (0x000000000000ff00 & value) >> 8;

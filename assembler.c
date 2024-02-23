@@ -96,12 +96,12 @@ int firstPass(FILE* fp){
             lines++;
         }
     }
-    fseek(fp, -1, SEEK_END);
-    char check = getc(fp);
-    if(check != '\n'){
-        fprintf(stderr, "%s%d\n", "Error on line ", lines);
-        return -1;
-    }
+    // fseek(fp, -1, SEEK_END);
+    // char check = getc(fp);
+    // if(check != '\n'){
+    //     fprintf(stderr, "%s%d\n", "Error on line ", lines);
+    //     return -1;
+    // }
     rewind(fp);
     int data = 0;
     int code = 0;
