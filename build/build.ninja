@@ -31,6 +31,18 @@ include rules.ninja
 
 
 #############################################
+# Utility command for rebuild_cache
+
+build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+  COMMAND = cd /u/yangm/cs429/Tinker/build && /usr/bin/cmake -S/u/yangm/cs429/Tinker -B/u/yangm/cs429/Tinker/build
+  DESC = Running CMake to regenerate build system...
+  pool = console
+  restat = 1
+
+build rebuild_cache: phony CMakeFiles/rebuild_cache.util
+
+
+#############################################
 # Utility command for test
 
 build CMakeFiles/test.util: CUSTOM_COMMAND
@@ -52,6 +64,38 @@ build CMakeFiles/package_source.util: CUSTOM_COMMAND
   restat = 1
 
 build package_source: phony CMakeFiles/package_source.util
+
+# =============================================================================
+# Object build statements for EXECUTABLE target simulator
+
+
+#############################################
+# Order-only phony target for simulator
+
+build cmake_object_order_depends_target_simulator: phony || CMakeFiles/simulator.dir
+
+build CMakeFiles/simulator.dir/simulator.c.o: C_COMPILER__simulator ../simulator.c || cmake_object_order_depends_target_simulator
+  DEP_FILE = CMakeFiles/simulator.dir/simulator.c.o.d
+  FLAGS = -g
+  OBJECT_DIR = CMakeFiles/simulator.dir
+  OBJECT_FILE_DIR = CMakeFiles/simulator.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target simulator
+
+
+#############################################
+# Link the executable simulator
+
+build simulator: C_EXECUTABLE_LINKER__simulator CMakeFiles/simulator.dir/simulator.c.o
+  FLAGS = -g
+  LINK_FLAGS = -rdynamic
+  OBJECT_DIR = CMakeFiles/simulator.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = simulator
+  TARGET_PDB = simulator.dbg
 
 
 #############################################
@@ -178,6 +222,38 @@ build NightlyStart: phony CMakeFiles/NightlyStart
 
 build ExperimentalCoverage: phony CMakeFiles/ExperimentalCoverage
 
+# =============================================================================
+# Object build statements for EXECUTABLE target assembler
+
+
+#############################################
+# Order-only phony target for assembler
+
+build cmake_object_order_depends_target_assembler: phony || CMakeFiles/assembler.dir
+
+build CMakeFiles/assembler.dir/assembler.c.o: C_COMPILER__assembler ../assembler.c || cmake_object_order_depends_target_assembler
+  DEP_FILE = CMakeFiles/assembler.dir/assembler.c.o.d
+  FLAGS = -g
+  OBJECT_DIR = CMakeFiles/assembler.dir
+  OBJECT_FILE_DIR = CMakeFiles/assembler.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target assembler
+
+
+#############################################
+# Link the executable assembler
+
+build assembler: C_EXECUTABLE_LINKER__assembler CMakeFiles/assembler.dir/assembler.c.o
+  FLAGS = -g
+  LINK_FLAGS = -rdynamic
+  OBJECT_DIR = CMakeFiles/assembler.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_FILE = assembler
+  TARGET_PDB = assembler.dbg
+
 
 #############################################
 # Utility command for NightlyCoverage
@@ -243,62 +319,6 @@ build ContinuousTest: phony CMakeFiles/ContinuousTest
 # Utility command for ContinuousSubmit
 
 build ContinuousSubmit: phony CMakeFiles/ContinuousSubmit
-
-
-#############################################
-# Utility command for rebuild_cache
-
-build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /u/yangm/cs429/Tinker/build && /usr/bin/cmake -S/u/yangm/cs429/Tinker -B/u/yangm/cs429/Tinker/build
-  DESC = Running CMake to regenerate build system...
-  pool = console
-  restat = 1
-
-build rebuild_cache: phony CMakeFiles/rebuild_cache.util
-
-# =============================================================================
-# Object build statements for EXECUTABLE target Tinker
-
-
-#############################################
-# Order-only phony target for Tinker
-
-build cmake_object_order_depends_target_Tinker: phony || CMakeFiles/Tinker.dir
-
-build CMakeFiles/Tinker.dir/main.c.o: C_COMPILER__Tinker ../main.c || cmake_object_order_depends_target_Tinker
-  DEP_FILE = CMakeFiles/Tinker.dir/main.c.o.d
-  FLAGS = -g
-  OBJECT_DIR = CMakeFiles/Tinker.dir
-  OBJECT_FILE_DIR = CMakeFiles/Tinker.dir
-
-build CMakeFiles/Tinker.dir/assembler.c.o: C_COMPILER__Tinker ../assembler.c || cmake_object_order_depends_target_Tinker
-  DEP_FILE = CMakeFiles/Tinker.dir/assembler.c.o.d
-  FLAGS = -g
-  OBJECT_DIR = CMakeFiles/Tinker.dir
-  OBJECT_FILE_DIR = CMakeFiles/Tinker.dir
-
-build CMakeFiles/Tinker.dir/simulator.c.o: C_COMPILER__Tinker ../simulator.c || cmake_object_order_depends_target_Tinker
-  DEP_FILE = CMakeFiles/Tinker.dir/simulator.c.o.d
-  FLAGS = -g
-  OBJECT_DIR = CMakeFiles/Tinker.dir
-  OBJECT_FILE_DIR = CMakeFiles/Tinker.dir
-
-
-# =============================================================================
-# Link build statements for EXECUTABLE target Tinker
-
-
-#############################################
-# Link the executable Tinker
-
-build Tinker: C_EXECUTABLE_LINKER__Tinker CMakeFiles/Tinker.dir/main.c.o CMakeFiles/Tinker.dir/assembler.c.o CMakeFiles/Tinker.dir/simulator.c.o
-  FLAGS = -g
-  LINK_FLAGS = -rdynamic
-  OBJECT_DIR = CMakeFiles/Tinker.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  TARGET_FILE = Tinker
-  TARGET_PDB = Tinker.dbg
 
 
 #############################################
@@ -535,7 +555,7 @@ build CMakeFiles/ContinuousSubmit: CUSTOM_COMMAND
 #############################################
 # Folder: /u/yangm/cs429/Tinker/build
 
-build all: phony Tinker
+build all: phony simulator assembler
 
 # =============================================================================
 # Unknown Build Time Dependencies.

@@ -22,7 +22,6 @@ int avail;
 addr* head = NULL;
 
 int main(int argc, char** argv){
-    printf("FILE: %s\n", argv[1]);
     FILE* fp = fopen(argv[1], "r\0");
     if(fp == NULL){
         fprintf(stderr, "%s", "Invalid tinker filepath\n");
@@ -332,7 +331,7 @@ int read(FILE* fp, char* outFile){
                     if(strcmp(cmdName, VALID_COMMANDS[h]) == 0){
                         if((strcmp(cmdName, "brr") != 0 && strcmp(cmdName, "mov") != 0) || ((strcmp(cmdName, "brr") == 0 || strcmp(cmdName, "mov") == 0) && h == check)){
                             if(splitter(cmdParams, h, emptyParams, out) == -1){
-                                fprintf(stderr, "%s%d %s\n", "Error on line ", i + 1, buffer);
+                                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
                                 remove(outFile);
                                 fclose(out);
                                 free(cmdParams);
@@ -419,21 +418,24 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                 }
                 regfree(&regex);
                 char *ptr;
-                l = strtol(tmp, &ptr, 10);
+                l = strtoul(tmp, &ptr, 10);
                 if(cmdNum == 16 || cmdNum == 21 || cmdNum == 24){
-                    if(l > 2047 || l < -2048){
+                    if(atoi(tmp) > 2047 || atoi(tmp) < -2048){
                         return -1;
                     }
+                    l = atoi(tmp);
                 }
                 else if(cmdNum == 33){
-                    if(l < 0 || l > ULONG_MAX){
+                    uint64_t max = 18446744073709551615ULL;
+                    if(l == max && !(strcmp(tmp, "18446744073709551615") == 0)){
                         return -1;
                     }
                 }
                 else{
-                    if(l > 4095 || l < 0){
+                    if(atoi(tmp) > 4095 || atoi(tmp) < 0){
                         return -1;
                     }
+                    l = atoi(tmp);
                 }
             }
             free(tmp);

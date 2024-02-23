@@ -1,19 +1,13 @@
 [
 {
   "directory": "/u/yangm/cs429/Tinker/build",
-  "command": "/lusr/bin/gcc-11   -g   -o CMakeFiles/Tinker.dir/main.c.o   -c /u/yangm/cs429/Tinker/main.c",
-  "file": "/u/yangm/cs429/Tinker/main.c"
-},
-
-{
-  "directory": "/u/yangm/cs429/Tinker/build",
-  "command": "/lusr/bin/gcc-11   -g   -o CMakeFiles/Tinker.dir/assembler.c.o   -c /u/yangm/cs429/Tinker/assembler.c",
-  "file": "/u/yangm/cs429/Tinker/assembler.c"
-},
-
-{
-  "directory": "/u/yangm/cs429/Tinker/build",
-  "command": "/lusr/bin/gcc-11   -g   -o CMakeFiles/Tinker.dir/simulator.c.o   -c /u/yangm/cs429/Tinker/simulator.c",
+  "command": "/lusr/bin/gcc-11   -g   -o CMakeFiles/simulator.dir/simulator.c.o   -c /u/yangm/cs429/Tinker/simulator.c",
   "file": "/u/yangm/cs429/Tinker/simulator.c"
+},
+
+{
+  "directory": "/u/yangm/cs429/Tinker/build",
+  "command": "/lusr/bin/gcc-11   -g   -o CMakeFiles/assembler.dir/assembler.c.o   -c /u/yangm/cs429/Tinker/assembler.c",
+  "file": "/u/yangm/cs429/Tinker/assembler.c"
 }
 ]

@@ -22,7 +22,7 @@ rule CUSTOM_COMMAND
 #############################################
 # Rule for compiling C files.
 
-rule C_COMPILER__Tinker
+rule C_COMPILER__simulator
   depfile = $DEP_FILE
   deps = gcc
   command = /lusr/bin/gcc-11 $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
@@ -32,7 +32,26 @@ rule C_COMPILER__Tinker
 #############################################
 # Rule for linking C executable.
 
-rule C_EXECUTABLE_LINKER__Tinker
+rule C_EXECUTABLE_LINKER__simulator
+  command = $PRE_LINK && /lusr/bin/gcc-11 $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
+  description = Linking C executable $TARGET_FILE
+  restat = $RESTAT
+
+
+#############################################
+# Rule for compiling C files.
+
+rule C_COMPILER__assembler
+  depfile = $DEP_FILE
+  deps = gcc
+  command = /lusr/bin/gcc-11 $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out   -c $in
+  description = Building C object $out
+
+
+#############################################
+# Rule for linking C executable.
+
+rule C_EXECUTABLE_LINKER__assembler
   command = $PRE_LINK && /lusr/bin/gcc-11 $FLAGS  $LINK_FLAGS $in  -o $TARGET_FILE $LINK_PATH $LINK_LIBRARIES && $POST_BUILD
   description = Linking C executable $TARGET_FILE
   restat = $RESTAT

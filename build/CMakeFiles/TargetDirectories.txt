@@ -1,5 +1,7 @@
+/u/yangm/cs429/Tinker/build/CMakeFiles/rebuild_cache.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/test.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/package_source.dir
+/u/yangm/cs429/Tinker/build/CMakeFiles/simulator.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/edit_cache.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/NightlyMemCheck.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/NightlyTest.dir
@@ -20,6 +22,7 @@
 /u/yangm/cs429/Tinker/build/CMakeFiles/NightlySubmit.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/NightlyStart.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/ExperimentalCoverage.dir
+/u/yangm/cs429/Tinker/build/CMakeFiles/assembler.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/NightlyCoverage.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/ExperimentalStart.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/package.dir
@@ -30,5 +33,3 @@
 /u/yangm/cs429/Tinker/build/CMakeFiles/ContinuousMemCheck.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/ContinuousTest.dir
 /u/yangm/cs429/Tinker/build/CMakeFiles/ContinuousSubmit.dir
-/u/yangm/cs429/Tinker/build/CMakeFiles/rebuild_cache.dir
-/u/yangm/cs429/Tinker/build/CMakeFiles/Tinker.dir
