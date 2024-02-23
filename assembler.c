@@ -418,7 +418,7 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                 }
                 else{
                     if(atoi(tmp) > 4095 || atoi(tmp) < 0){
-                        fprintf(stderr, "Error on line %d\n", atoi(tmp));
+                        fprintf(stderr, "Error on line %s\n", cmdParams);
                         return -1;
                     }
                 }
