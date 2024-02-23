@@ -332,7 +332,7 @@ int read(FILE* fp, char* outFile){
                     if(strcmp(cmdName, VALID_COMMANDS[h]) == 0){
                         if((strcmp(cmdName, "brr") != 0 && strcmp(cmdName, "mov") != 0) || ((strcmp(cmdName, "brr") == 0 || strcmp(cmdName, "mov") == 0) && h == check)){
                             if(splitter(cmdParams, h, emptyParams, out) == -1){
-                                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                                fprintf(stderr, "%s%d %s\n", "Error on line ", i + 1, buffer);
                                 remove(outFile);
                                 fclose(out);
                                 free(cmdParams);
@@ -418,7 +418,7 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                 }
                 else{
                     if(atoi(tmp) > 4095 || atoi(tmp) < 0){
-                        fprintf(stderr, "Error on line %s\n", cmdParams);
+                        //fprintf(stderr, "Error on line %s\n", cmdParams);
                         return -1;
                     }
                 }
