@@ -24,8 +24,6 @@ typedef struct CPU {
 
 int memCheck(uint64_t index);
 
-int instrCheck(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l);
-
 int add(uint64_t rd, uint64_t rs, uint64_t rt);
 
 void addi(uint64_t rd, uint64_t l);

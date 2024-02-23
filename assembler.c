@@ -357,7 +357,17 @@ int read(FILE* fp, char* outFile){
                         return -1;
                     }
                 }
-                uint64_t dataVal = atoi(buff);
+                uint64_t max = 18446744073709551615ULL;
+                char *ptr;
+                uint64_t dataVal = strtoul(buff, &ptr, 10);
+                if(dataVal == max && !(strcmp(buff, "18446744073709551615") == 0)){
+                    fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                    fclose(out);
+                    remove(outFile);
+                    free(buffer);
+                    freeList(head);
+                    return -1;
+                }
                 fwrite(&dataVal, sizeof(dataVal), 1, out);
             }
         }
@@ -385,7 +395,7 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
     int nextReg = 1;
     if(emptyParams == 0){
         while(x < strlen(cmdParams)) {
-            char* tmp = (char*) calloc(sizeof(cmdParams), 1);
+            char* tmp = (char*) calloc(sizeof(cmdParams) * sizeof(char), 1);
             int k = 0;
             if(x < strlen(cmdParams) && cmdParams[x] == '('){
                 x++;
