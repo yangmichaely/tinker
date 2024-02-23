@@ -109,7 +109,7 @@ int firstPass(FILE* fp){
         char* buffer = (char*) calloc(512 * sizeof(char), 1);
         fgets(buffer, 512, fp);
         if(strchr(buffer, '\n') == NULL){
-            fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+            fprintf(stderr, "%s%d\n", "aError on line ", i + 1);
             free(buffer);
             return -1;
         }
@@ -126,7 +126,7 @@ int firstPass(FILE* fp){
                 data = 0;
             }
             else{
-                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                fprintf(stderr, "%s%d\n", "bError on line ", i + 1);
                 freeList(head);
                 free(buffer);
                 return -1;
@@ -161,7 +161,7 @@ int firstPass(FILE* fp){
             regex_t regex;
             regcomp(&regex, VALID_PARAMETERS[7], REG_EXTENDED);
             if(strlen(name) > 255 || regexec(&regex, name, 0, NULL, 0) != 0 || found != -1){
-                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                fprintf(stderr, "%s%d\n", "cError on line ", i + 1);
                 regfree(&regex);
                 freeList(head);
                 free(buffer);
@@ -171,7 +171,7 @@ int firstPass(FILE* fp){
             insert(name, mem, strlen(name));
         }
         else if(c != ';'){
-            fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+            fprintf(stderr, "%s%d\n", "dError on line ", i + 1);
             freeList(head);
             free(buffer);
             return -1;
@@ -319,7 +319,7 @@ int read(FILE* fp, char* outFile){
                 }
                 int check = checkValid(cmdName, cmdParams, emptyParams);
                 if(check == 0){
-                    fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                    fprintf(stderr, "%s%d\n", "eError on line ", i + 1);
                     remove(outFile);
                     fclose(out);
                     free(cmdParams);
@@ -332,7 +332,7 @@ int read(FILE* fp, char* outFile){
                     if(strcmp(cmdName, VALID_COMMANDS[h]) == 0){
                         if((strcmp(cmdName, "brr") != 0 && strcmp(cmdName, "mov") != 0) || ((strcmp(cmdName, "brr") == 0 || strcmp(cmdName, "mov") == 0) && h == check)){
                             if(splitter(cmdParams, h, emptyParams, out) == -1){
-                                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                                fprintf(stderr, "%s%d\n", "fError on line ", i + 1);
                                 remove(outFile);
                                 fclose(out);
                                 free(cmdParams);
@@ -350,7 +350,7 @@ int read(FILE* fp, char* outFile){
             else if(data == 1){
                 for (int j = 0; j < strlen(buff); j++){
                     if (!isdigit(buff[j])){
-                        fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                        fprintf(stderr, "%s%d\n", "gError on line ", i + 1);
                         fclose(out);
                         remove(outFile);
                         free(buffer);
