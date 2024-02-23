@@ -391,7 +391,7 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
             if(x < strlen(cmdParams) && cmdParams[x] == '('){
                 x++;
             }
-            while (x < strlen(cmdParams) && cmdParams[x] != '\0' && cmdParams[x] != ',' && cmdParams[x] != ')' && cmdParams[x] != '\n') {
+            while (x < strlen(cmdParams) && cmdParams[x] != '\0' && cmdParams[x] != ',' && cmdParams[x] != ')') {
                 tmp[k++] = cmdParams[x++];
             }
             x+=2;
@@ -417,16 +417,8 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                     }
                 }
                 else{
-                    // if(atoi(tmp) > 4095 || atoi(tmp) < 0){
-                    //     fprintf(stderr, "cError on line 1\n");
-                    //     return -1;
-                    // }
-                    if(atoi(tmp) < 0){
-                        fprintf(stderr, "aError on line 1\n");
-                        return -1;
-                    }
-                    if(atoi(tmp) > 4095){
-                        fprintf(stderr, "cError on line 1\n");
+                    if(atoi(tmp) > 4095 || atoi(tmp) < 0){
+                        fprintf(stderr, "Error on line %d\n", atoi(tmp));
                         return -1;
                     }
                 }
