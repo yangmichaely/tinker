@@ -415,6 +415,7 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                     if(atoi(tmp) > 2047 || atoi(tmp) < -2048){
                         return -1;
                     }
+                    l = atoi(tmp);
                 }
                 else if(cmdNum == 33){
                     char *ptr;
@@ -427,8 +428,8 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                     if(atoi(tmp) > 4095 || atoi(tmp) < 0){
                         return -1;
                     }
+                    l = atoi(tmp);
                 }
-                l = atoi(tmp);
             }
             free(tmp);
         }
