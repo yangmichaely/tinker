@@ -391,7 +391,7 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
             if(x < strlen(cmdParams) && cmdParams[x] == '('){
                 x++;
             }
-            while (x < strlen(cmdParams) && cmdParams[x] != '\0' && cmdParams[x] != ',' && cmdParams[x] != ')') {
+            while (x < strlen(cmdParams) && cmdParams[x] != '\0' && cmdParams[x] != ',' && cmdParams[x] != ')' && cmdParams[x] != '\n') {
                 tmp[k++] = cmdParams[x++];
             }
             x+=2;
@@ -406,7 +406,6 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                 uint64_t labelAddr = search(label);
                 if(labelAddr == -1){
                     free(tmp);
-                    fprintf(stderr, "aError on line 1\n");
                     return -1;
                 }
                 l = labelAddr;
@@ -414,12 +413,19 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
             else{
                 if(cmdNum == 16 || cmdNum == 21 || cmdNum == 24){
                     if(atoi(tmp) > 2047 || atoi(tmp) < -2048){
-                        fprintf(stderr, "bError on line 1\n");
                         return -1;
                     }
                 }
                 else{
-                    if(atoi(tmp) > 4095 || atoi(tmp) < 0){
+                    // if(atoi(tmp) > 4095 || atoi(tmp) < 0){
+                    //     fprintf(stderr, "cError on line 1\n");
+                    //     return -1;
+                    // }
+                    if(atoi(tmp) < 0){
+                        fprintf(stderr, "aError on line 1\n");
+                        return -1;
+                    }
+                    if(atoi(tmp) > 4095){
                         fprintf(stderr, "cError on line 1\n");
                         return -1;
                     }
