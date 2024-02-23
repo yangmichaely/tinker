@@ -420,13 +420,13 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                 l = labelAddr;
             }
             else{
-                regex_t regex;
-                regcomp(&regex, "^[-+]?[0-9]+$", REG_EXTENDED);
-                if(regexec(&regex, cmdParams, 0, NULL, 0) == 0){
-                    regfree(&regex);
-                    return -1;
-                }
-                regfree(&regex);
+                // regex_t regex;
+                // regcomp(&regex, "^[-+]?[0-9]+$", REG_EXTENDED);
+                // if(regexec(&regex, cmdParams, 0, NULL, 0) == 0){
+                //     regfree(&regex);
+                //     return -1;
+                // }
+                // regfree(&regex);
                 char *ptr;
                 l = strtoul(tmp, &ptr, 10);
                 if(cmdNum == 16 || cmdNum == 21 || cmdNum == 24){
