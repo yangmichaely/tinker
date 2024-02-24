@@ -173,14 +173,17 @@ int movReadMemStoreReg(uint64_t rd, uint64_t rs, uint64_t l){
         }
     }
     uint64_t val = 0;
-    val |= (uint64_t) cpu.mem[cpu.regs[rs].uinteger64 + l + 4] << 56;
-    val |= (uint64_t) cpu.mem[cpu.regs[rs].uinteger64 + l + 5] << 48;
-    val |= (uint64_t) cpu.mem[cpu.regs[rs].uinteger64 + l + 6] << 40;
-    val |= (uint64_t) cpu.mem[cpu.regs[rs].uinteger64 + l + 7] << 32;
-    val |= cpu.mem[cpu.regs[rs].uinteger64 + l] << 24;
-    val |= cpu.mem[cpu.regs[rs].uinteger64 + l + 1] << 16;
-    val |= cpu.mem[cpu.regs[rs].uinteger64 + l + 2] << 8;
-    val |= cpu.mem[cpu.regs[rs].uinteger64 + l + 3];
+    for(int i = 0; i < 8; i++){
+        val |= (uint64_t) cpu.mem[cpu.regs[rs].uinteger64 + l + i] << (i * 8);
+    }
+    // val |= (uint64_t) cpu.mem[cpu.regs[rs].uinteger64 + l + 4] << 56;
+    // val |= (uint64_t) cpu.mem[cpu.regs[rs].uinteger64 + l + 5] << 48;
+    // val |= (uint64_t) cpu.mem[cpu.regs[rs].uinteger64 + l + 6] << 40;
+    // val |= (uint64_t) cpu.mem[cpu.regs[rs].uinteger64 + l + 7] << 32;
+    // val |= cpu.mem[cpu.regs[rs].uinteger64 + l] << 24;
+    // val |= cpu.mem[cpu.regs[rs].uinteger64 + l + 1] << 16;
+    // val |= cpu.mem[cpu.regs[rs].uinteger64 + l + 2] << 8;
+    // val |= cpu.mem[cpu.regs[rs].uinteger64 + l + 3];
     cpu.regs[rd].uinteger64 = val;
     cpu.pc += 4;
     return 0;
@@ -204,14 +207,17 @@ int movReadRegStoreMem(uint64_t rd, uint64_t rs, uint64_t l){
         }
     }
     uint64_t value = cpu.regs[rs].uinteger64;
-    cpu.mem[cpu.regs[rd].uinteger64 + l + 4] = (0xff00000000000000 & value) >> 56;
-    cpu.mem[cpu.regs[rd].uinteger64 + l + 5] = (0x00ff000000000000 & value) >> 48;
-    cpu.mem[cpu.regs[rd].uinteger64 + l + 6] = (0x0000ff0000000000 & value) >> 40;
-    cpu.mem[cpu.regs[rd].uinteger64 + l + 7] = 0x000000ff00000000 & value >> 32;
-    cpu.mem[cpu.regs[rd].uinteger64 + l] = (0x00000000ff000000 & value) >> 24;
-    cpu.mem[cpu.regs[rd].uinteger64 + l + 1] = (0x0000000000ff0000 & value) >> 16;
-    cpu.mem[cpu.regs[rd].uinteger64 + l + 2] = (0x000000000000ff00 & value) >> 8;
-    cpu.mem[cpu.regs[rd].uinteger64 + l + 3] = 0xff & value;
+    for(int i = 0; i < 8; i++){
+        cpu.mem[cpu.regs[rd].uinteger64 + l + i] = (((long)0xff << i * 8) & value) >> i * 8;
+    }
+    // cpu.mem[cpu.regs[rd].uinteger64 + l] = (0x00000000ff000000 & value) >> 24;
+    // cpu.mem[cpu.regs[rd].uinteger64 + l + 1] = (0x0000000000ff0000 & value) >> 16;
+    // cpu.mem[cpu.regs[rd].uinteger64 + l + 2] = (0x000000000000ff00 & value) >> 8;
+    // cpu.mem[cpu.regs[rd].uinteger64 + l + 3] = 0xff & value;
+    // cpu.mem[cpu.regs[rd].uinteger64 + l + 4] = (0xff00000000000000 & value) >> 56;
+    // cpu.mem[cpu.regs[rd].uinteger64 + l + 5] = (0x00ff000000000000 & value) >> 48;
+    // cpu.mem[cpu.regs[rd].uinteger64 + l + 6] = (0x0000ff0000000000 & value) >> 40;
+    // cpu.mem[cpu.regs[rd].uinteger64 + l + 7] = 0x000000ff00000000 & value >> 32;
     cpu.pc += 4;
     return 0;
 }
@@ -380,25 +386,18 @@ int readBinary(FILE* f){
         cpu.mem[i] = 0;
     }
     for(int i = 0; i < NUM_REGS; i++){
-        cpu.regs[i].sinteger64 = 0;
         cpu.regs[i].uinteger64 = 0;
-        cpu.regs[i].floatingPoint = 0;
     }
     fseek(f, 0, SEEK_END);
     int length = ftell(f);
-    uint64_t binary = 0;
-    cpu.regs[31].sinteger64 = MEM_SIZE;
+    uint8_t binary = 0;
     cpu.regs[31].uinteger64 = MEM_SIZE;
-    cpu.regs[31].floatingPoint = MEM_SIZE;
     int check = 0;
     cpu.pc = 0;
     rewind(f);
     int nextMem = 0;
-    while(fread(&binary, 4, 1, f) == 1){
-        cpu.mem[nextMem++] = (0xff000000 & binary) >> 24;
-        cpu.mem[nextMem++] = (0x00ff0000 & binary) >> 16;
-        cpu.mem[nextMem++] = (0x0000ff00 & binary) >> 8;
-        cpu.mem[nextMem++] = 0xff & binary;
+    while(fread(&binary, sizeof(binary), 1, f) == 1){
+        cpu.mem[nextMem++] = binary;
     }
     while(cpu.pc < length){
         for(int i = 0; i < 4; i++){
@@ -407,10 +406,10 @@ int readBinary(FILE* f){
             }
         }
         uint64_t instr = 0;
-        instr |= cpu.mem[cpu.pc] << 24;
-        instr |= cpu.mem[cpu.pc + 1] << 16;
-        instr |= cpu.mem[cpu.pc + 2] << 8;
-        instr |= cpu.mem[cpu.pc + 3];
+        instr |= cpu.mem[cpu.pc];
+        instr |= cpu.mem[cpu.pc + 1] << 8;
+        instr |= cpu.mem[cpu.pc + 2] << 16;
+        instr |= cpu.mem[cpu.pc + 3] << 24;
         uint64_t opcode = (instr >> 27) & 0x1f;
         uint64_t rd = (instr >> 22) & 0x1f;
         uint64_t rs = (instr >> 17) & 0x1f;
@@ -423,11 +422,11 @@ int readBinary(FILE* f){
                 l = -(~l + 4097);
             }
         }
-        // printf("opcode: %ld\n", opcode);
-        // printf("rd: %ld\n", rd);
-        // printf("rs: %ld\n", rs);
-        // printf("rt: %ld\n", rt);
-        // printf("l: %ld\n", l);
+        printf("opcode: %ld\n", opcode);
+        printf("rd: %ld\n", rd);
+        printf("rs: %ld\n", rs);
+        printf("rt: %ld\n", rt);
+        printf("l: %ld\n", l);
         check = interpret(opcode, rd, rs, rt, l);
         if(check == -1){
             fprintf(stderr, "%s\n", "Simulation error");
