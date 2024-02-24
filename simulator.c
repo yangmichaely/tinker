@@ -426,7 +426,7 @@ int readBinary(FILE* f){
         // printf("rd: %ld\n", rd);
         // printf("rs: %ld\n", rs);
         // printf("rt: %ld\n", rt);
-        printf("l: %ld\n", l);
+        // printf("l: %ld\n", l);
         check = interpret(opcode, rd, rs, rt, l);
         if(check == -1){
             fprintf(stderr, "%s\n", "Simulation error");
