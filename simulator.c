@@ -16,7 +16,14 @@ int main(int argc, char** argv){
         fprintf(stderr, "%s", "Invalid tko filepath\n");
         return -1;
     }
-    //if(argv[1][strlen(argv[1])])
+    char o = argv[1][strlen(argv[1]) - 1];
+    char k = argv[1][strlen(argv[1]) - 2];
+    char t = argv[1][strlen(argv[1]) - 3];
+    char dot = argv[1][strlen(argv[1]) - 4];
+    if(k != 'k' || t != 't' || dot != '.' || o != 'o'){
+        fprintf(stderr, "%s", "Invalid tinker filepath\n");
+        return -1;
+    }
     if(readBinary(f) != 0){
         fclose(f);
         return -1;
@@ -129,11 +136,15 @@ int call(uint64_t rd, uint64_t rs, uint64_t rt){
             return -1;
         }
     }
+    // uint32_t value = (uint32_t) cpu.pc + 4;
+    // cpu.mem[cpu.regs[31].uinteger64 - 8] = (0xff000000 & value) >> 24;
+    // cpu.mem[cpu.regs[31].uinteger64 - 7] = (0x00ff0000 & value) >> 16;
+    // cpu.mem[cpu.regs[31].uinteger64 - 6] = (0x0000ff00 & value) >> 8;
+    // cpu.mem[cpu.regs[31].uinteger64 - 5] = 0xff & value;
     uint32_t value = (uint32_t) cpu.pc + 4;
-    cpu.mem[cpu.regs[31].uinteger64 - 8] = (0xff000000 & value) >> 24;
-    cpu.mem[cpu.regs[31].uinteger64 - 7] = (0x00ff0000 & value) >> 16;
-    cpu.mem[cpu.regs[31].uinteger64 - 6] = (0x0000ff00 & value) >> 8;
-    cpu.mem[cpu.regs[31].uinteger64 - 5] = 0xff & value;
+    for(int i = 0; i < 4; i++){
+        cpu.mem[cpu.regs[31].uinteger64 - 8 + i] = (((long)0xff << i * 8) & value) >> i * 8;
+    }
     cpu.pc = cpu.regs[rd].uinteger64;
     return 0;
 }
@@ -145,14 +156,17 @@ int ret(){
         }
     }
     uint64_t val = 0;
-    val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 4] << 56;
-    val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 3] << 48;
-    val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 2] << 40;
-    val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 1] << 32;
-    val |= cpu.mem[cpu.regs[31].uinteger64 - 8] << 24;
-    val |= cpu.mem[cpu.regs[31].uinteger64 - 7] << 16;
-    val |= cpu.mem[cpu.regs[31].uinteger64 - 6] << 8;
-    val |= cpu.mem[cpu.regs[31].uinteger64 - 5];
+    for(int i = 0; i < 8; i++){
+        val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 8 + i] << (i * 8);
+    }
+    // val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 4] << 56;
+    // val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 3] << 48;
+    // val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 2] << 40;
+    // val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 1] << 32;
+    // val |= cpu.mem[cpu.regs[31].uinteger64 - 8] << 24;
+    // val |= cpu.mem[cpu.regs[31].uinteger64 - 7] << 16;
+    // val |= cpu.mem[cpu.regs[31].uinteger64 - 6] << 8;
+    // val |= cpu.mem[cpu.regs[31].uinteger64 - 5];
     cpu.pc = val;
     return 0;
 }
@@ -253,7 +267,7 @@ int in(uint64_t rd, uint64_t rs){
 
 int out(uint64_t rd, uint64_t rs){
     if(cpu.regs[rd].uinteger64 == 1){
-        printf("%ld\n", cpu.regs[rs].uinteger64);
+        printf("%lu\n", cpu.regs[rs].uinteger64);
         cpu.pc += 4;
         return 0;
     }

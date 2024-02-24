@@ -27,6 +27,13 @@ int main(int argc, char** argv){
         fprintf(stderr, "%s", "Invalid tinker filepath\n");
         return -1;
     }
+    char k = argv[1][strlen(argv[1]) - 1];
+    char t = argv[1][strlen(argv[1]) - 2];
+    char dot = argv[1][strlen(argv[1]) - 3];
+    if(k != 'k' || t != 't' || dot != '.'){
+        fprintf(stderr, "%s", "Invalid tinker filepath\n");
+        return -1;
+    }
     if(firstPass(fp) != 1){
         fclose(fp);
         return -1;
@@ -95,12 +102,6 @@ int firstPass(FILE* fp){
             lines++;
         }
     }
-    // fseek(fp, -1, SEEK_END);
-    // char check = getc(fp);
-    // if(check != '\n'){
-    //     fprintf(stderr, "%s%d\n", "Error on line ", lines);
-    //     return -1;
-    // }
     rewind(fp);
     int data = 0;
     int code = 0;

@@ -1,5 +1,4 @@
 .code
+	subi r0, 4095
 	addi r8, 1
-	subi r0, 1
 	out r8, r0
-	halt
