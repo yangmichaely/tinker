@@ -16,7 +16,7 @@ int main(int argc, char** argv){
         fprintf(stderr, "%s", "Invalid tko filepath\n");
         return -1;
     }
-    if(argv[1][strlen(argv[1])])
+    //if(argv[1][strlen(argv[1])])
     if(readBinary(f) != 0){
         fclose(f);
         return -1;
