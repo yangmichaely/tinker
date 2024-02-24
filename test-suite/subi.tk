@@ -1,3 +1,4 @@
 .code
 	subi r0, 1
-	halt
+	addi r8, 1
+	out r8, r0
