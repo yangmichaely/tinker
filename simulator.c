@@ -246,7 +246,7 @@ int in(uint64_t rd, uint64_t rs){
 
 int out(uint64_t rd, uint64_t rs){
     if(cpu.regs[rd].uinteger64 == 1){
-        printf("%ld\n", cpu.regs[rs].uinteger64);
+        printf("%ld", cpu.regs[rs].uinteger64);
         cpu.pc += 4;
         return 0;
     }
