@@ -1,5 +1,4 @@
 .code
 	addi r8, 1
-	out r8, r0
-	subi r0, 200
+	subi r0, 0
 	out r8, r0

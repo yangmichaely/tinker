@@ -246,7 +246,7 @@ int in(uint64_t rd, uint64_t rs){
 
 int out(uint64_t rd, uint64_t rs){
     if(cpu.regs[rd].uinteger64 == 1){
-        printf("%ld", cpu.regs[rs].uinteger64);
+        printf("%ld\n", cpu.regs[rs].uinteger64);
         cpu.pc += 4;
         return 0;
     }
@@ -404,11 +404,18 @@ int readBinary(FILE* f){
         uint64_t rs = (instr >> 17) & 0x1f;
         uint64_t rt = (instr >> 12) & 0x1f;
         uint64_t l = instr & 0xfff;
-        // printf("opcode: %ld\n", opcode);
-        // printf("rd: %ld\n", rd);
-        // printf("rs: %ld\n", rs);
-        // printf("rt: %ld\n", rt);
-        // printf("l: %ld\n", l);
+        if(opcode == 16 || opcode == 21 || opcode == 24){
+            uint64_t sign = l & (1 << 11);
+            sign = sign >> 11;
+            if(sign == 1){
+                l = -(~l + 4097);
+            }
+        }
+        printf("opcode: %ld\n", opcode);
+        printf("rd: %ld\n", rd);
+        printf("rs: %ld\n", rs);
+        printf("rt: %ld\n", rt);
+        printf("l: %ld\n", l);
         check = interpret(opcode, rd, rs, rt, l);
         if(check == -1){
             fprintf(stderr, "%s\n", "Simulation error");

@@ -433,7 +433,7 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                     if(atoi(tmp) > 2047 || atoi(tmp) < -2048){
                         return -1;
                     }
-                    l = atoi(tmp);
+                    //l = atoi(tmp);
                 }
                 else if(cmdNum == 33){
                     uint64_t max = 18446744073709551615ULL;
@@ -445,7 +445,7 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                     if(atoi(tmp) > 4095 || atoi(tmp) < 0){
                         return -1;
                     }
-                    l = atoi(tmp);
+                    //l = atoi(tmp);
                 }
             }
             free(tmp);
@@ -501,6 +501,9 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
         fwrite(&binInstruction, sizeof(binInstruction), 1, out);
     }
     else{
+        if(instruction[0] == 16 || instruction[0] == 21 || instruction[0] == 24){
+            l &= 0xfff;
+        }
         binInstruction = calcShifts(l, instruction[3], instruction[2], instruction[1], instruction[0]);
         fwrite(&binInstruction, sizeof(binInstruction), 1, out);
     }
