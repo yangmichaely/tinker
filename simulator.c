@@ -47,7 +47,7 @@ void sub(uint64_t rd, uint64_t rs, uint64_t rt){
 }
 
 void subi(uint64_t rd, uint64_t l){
-    cpu.regs[rd].uinteger64 -= l;
+    cpu.regs[rd].sinteger64 -= l;
     cpu.pc += 4;
 }
 
@@ -394,6 +394,11 @@ int readBinary(FILE* f){
         cpu.mem[nextMem++] = 0xff & binary;
     }
     while(cpu.pc < length){
+        for(int i = 0; i < 4; i++){
+            if(memCheck(cpu.pc + i) != 0){
+                return -1;
+            }
+        }
         uint64_t instr = 0;
         instr |= cpu.mem[cpu.pc] << 24;
         instr |= cpu.mem[cpu.pc + 1] << 16;
