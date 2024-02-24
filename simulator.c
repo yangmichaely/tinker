@@ -16,6 +16,7 @@ int main(int argc, char** argv){
         fprintf(stderr, "%s", "Invalid tko filepath\n");
         return -1;
     }
+    if(argv[1][strlen(argv[1])])
     if(readBinary(f) != 0){
         fclose(f);
         return -1;
@@ -271,6 +272,9 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
             mul(rd, rs, rt);
             return 0;
         case 5:
+            if(rt == 0){
+                return -1;
+            }
             divide(rd, rs, rt);
             return 0;
         case 6:
@@ -348,6 +352,9 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
             mulf(rd, rs, rt);
             return 0;
         case 28:
+            if(rt == 0){
+                return -1;
+            }
             divf(rd, rs, rt);
             return 0;
         case 29:

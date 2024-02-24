@@ -2,3 +2,4 @@
 	addi r8, 1
 	subi r0, 0
 	out r8, r0
+	halt
