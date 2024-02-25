@@ -418,10 +418,10 @@ int readBinary(FILE* f){
     while(cpu.pc < nextMem){
         for(int i = 0; i < 4; i++){
             if(memCheck(cpu.pc + i) != 0){
-                return -1;
+                fprintf(stderr, "%s\n", "Simulation error");
+                exit(-1);
             }
         }
-        printf("bruh: %lu\n", cpu.pc);
         uint64_t instr = 0;
         instr |= cpu.mem[cpu.pc];
         instr |= cpu.mem[cpu.pc + 1] << 8;
