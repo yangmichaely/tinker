@@ -84,8 +84,8 @@ int search(char* name){
 }
 
 void freeList(addr* head){
-   addr* tmp;
-   while (head != NULL){
+    addr* tmp;
+    while (head != NULL){
         tmp = head;
         head = head->next;
         free(tmp -> name);
