@@ -10,7 +10,6 @@
 CPU cpu;
 
 int main(int argc, char** argv){
-    // printf("FILE: %s\n", argv[1]);
     FILE* f = fopen(argv[1], "rb\0");
     if(f == NULL){
         fprintf(stderr, "%s", "Invalid tko filepath\n");
