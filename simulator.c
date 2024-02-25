@@ -8,6 +8,7 @@
 #include <regex.h>
 
 CPU cpu;
+int length;
 
 int main(int argc, char** argv){
     FILE* f = fopen(argv[1], "rb\0");
@@ -32,7 +33,7 @@ int main(int argc, char** argv){
 }
 
 int memCheck(uint64_t index){
-    if(index < 0 || index >= MEM_SIZE){
+    if(index < 0 || index >= MEM_SIZE || index >= length){
         return -1;
     }
     return 0;
@@ -402,7 +403,7 @@ int readBinary(FILE* f){
         cpu.regs[i].uinteger64 = 0;
     }
     fseek(f, 0, SEEK_END);
-    int length = ftell(f);
+    length = ftell(f);
     uint8_t binary = 0;
     cpu.regs[31].uinteger64 = MEM_SIZE;
     int check = 0;
