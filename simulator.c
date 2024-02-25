@@ -140,7 +140,7 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
         case 21:
             for(int i = 0; i < 8; i++){
                 if(memCheck(cpu.regs[rd].uinteger64 + l + i) != 0){
-                    fprintf(stderr, "%s%lu\n", "Simulation error", l);
+                    fprintf(stderr, "%s%ld\n", "Simulation error", l);
                     return -1;
                 }
             }
