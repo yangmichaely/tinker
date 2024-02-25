@@ -332,7 +332,7 @@ int read(FILE* fp, char* outFile){
                     if(strcmp(cmdName, VALID_COMMANDS[h]) == 0){
                         if((strcmp(cmdName, "brr") != 0 && strcmp(cmdName, "mov") != 0) || ((strcmp(cmdName, "brr") == 0 || strcmp(cmdName, "mov") == 0) && h == check)){
                             if(splitter(cmdParams, h, emptyParams, out) == -1){
-                                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                                fprintf(stderr, "%s%d\n", "aewjfbaigbError on line ", i + 1);
                                 remove(outFile);
                                 fclose(out);
                                 free(cmdParams);
