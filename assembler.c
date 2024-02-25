@@ -36,7 +36,7 @@ int main(int argc, char** argv){
     }
     if(firstPass(fp) != 1){
         fclose(fp);
-        return -1;
+        exit(-1);
     }
     char* outFile = (char*) calloc(sizeof(char) * strlen(argv[1]) + 2, 1);
     for(int i = 0; i < strlen(argv[1]); i++){
@@ -46,7 +46,7 @@ int main(int argc, char** argv){
     outFile[strlen(argv[1]) + 1] = '\0';
     if(read(fp, outFile) != 1){
         fclose(fp);
-        return -1;
+        exit(-1);
     }
     free(outFile);
     fclose(fp);
