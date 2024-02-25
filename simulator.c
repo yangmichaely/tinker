@@ -132,7 +132,7 @@ void brnz(uint64_t rd, uint64_t rs){
 
 int call(uint64_t rd, uint64_t rs, uint64_t rt){
     //for(int i = 0; i < 4; i++){
-        if(memCheck(cpu.regs[rd].uinteger64 - 8) != 0){
+        if(memCheck(cpu.regs[31].uinteger64 - 8) != 0){
             return -1;
         }
     //}
@@ -395,7 +395,7 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
         default:
             return -1;
     }
-    //return 0;
+    return 0;
 }
 
 int readBinary(FILE* f){
@@ -414,9 +414,10 @@ int readBinary(FILE* f){
     rewind(f);
     int nextMem = 0;
     while(fread(&binary, sizeof(binary), 1, f) == 1){
-        cpu.mem[nextMem++] = binary;
+        cpu.mem[nextMem] = binary;
+        nextMem++;
     }
-    while(cpu.pc < length){
+    while(cpu.pc < nextMem){
         for(int i = 0; i < 4; i++){
             if(memCheck(cpu.pc + i) != 0){
                 return -1;
