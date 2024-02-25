@@ -50,7 +50,7 @@ int main(int argc, char** argv){
     }
     free(outFile);
     fclose(fp);
-    return 0;
+    return -1;
 }
 
 void insert(char* name, int address, int nameLength){
@@ -279,7 +279,6 @@ int checkValid(char* cmdName, char* cmdParams, int emptyParams){
     else{
         return 0;
     }
-    return 0;
 }
 
 int read(FILE* fp, char* outFile){
