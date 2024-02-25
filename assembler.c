@@ -184,7 +184,7 @@ int firstPass(FILE* fp){
 int checkValid(char* cmdName, char* cmdParams, int emptyParams){
     if(strcmp(cmdName, "add") == 0 || strcmp(cmdName, "sub") == 0 || strcmp(cmdName, "mul") == 0 || strcmp(cmdName, "div") == 0 || 
         strcmp(cmdName, "and") == 0 || strcmp(cmdName, "or") == 0 || strcmp(cmdName, "xor") == 0 || strcmp(cmdName, "shftr") == 0 ||
-        strcmp(cmdName, "shftl") == 0 || strcmp(cmdName, "call") == 0 || strcmp(cmdName, "brgt") == 0 || strcmp(cmdName, "addf") == 0 ||
+        strcmp(cmdName, "shftl") == 0 || strcmp(cmdName, "brgt") == 0 || strcmp(cmdName, "addf") == 0 ||
         strcmp(cmdName, "subf") == 0 || strcmp(cmdName, "mulf") == 0 || strcmp(cmdName, "divf") == 0){
             regex_t regex;
             regcomp(&regex, VALID_PARAMETERS[0], REG_EXTENDED);
@@ -216,7 +216,7 @@ int checkValid(char* cmdName, char* cmdParams, int emptyParams){
         regfree(&regex);
         return 0;
     }
-    else if(strcmp(cmdName, "br") == 0 || strcmp(cmdName, "clr") == 0 || strcmp(cmdName, "push") == 0 || strcmp(cmdName, "pop") == 0){
+    else if(strcmp(cmdName, "br") == 0 || strcmp(cmdName, "clr") == 0 || strcmp(cmdName, "push") == 0 || strcmp(cmdName, "pop") == 0 || strcmp(cmdName, "call") == 0){
         regex_t regex;
         regcomp(&regex, VALID_PARAMETERS[2], REG_EXTENDED);
         if(regexec(&regex, cmdParams, 0, NULL, 0) == 0){

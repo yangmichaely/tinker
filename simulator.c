@@ -8,7 +8,6 @@
 #include <regex.h>
 
 int nextMem;
-CPU cpu;
 
 int main(int argc, char** argv){
     FILE* f = fopen(argv[1], "rb\0");
@@ -219,13 +218,10 @@ int readBinary(FILE* f){
     for(int i = 0; i < NUM_REGS; i++){
         cpu.regs[i].uinteger64 = 0;
     }
-    // fseek(f, 0, SEEK_END);
-    // int length = ftell(f);
     uint8_t binary = 0;
     cpu.regs[31].uinteger64 = MEM_SIZE;
     int check = 0;
     cpu.pc = 0;
-    // rewind(f);
     nextMem = 0;
     while(fread(&binary, sizeof(binary), 1, f) == 1){
         cpu.mem[nextMem] = binary;
