@@ -44,7 +44,7 @@ int main(int argc, char** argv){
     read(fp, outFile);
     // free(outFile);
     // fclose(fp);
-    return 0;
+    // return 0;
 }
 
 void insert(char* name, int address, int nameLength){
