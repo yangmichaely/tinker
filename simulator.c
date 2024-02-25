@@ -131,34 +131,35 @@ void brnz(uint64_t rd, uint64_t rs){
 }
 
 int call(uint64_t rd, uint64_t rs, uint64_t rt){
-    for(int i = 0; i < 4; i++){
-        if(memCheck(cpu.regs[rd].uinteger64 - 8 + i) != 0){
+    //for(int i = 0; i < 4; i++){
+        if(memCheck(cpu.regs[rd].uinteger64 - 8) != 0){
             return -1;
         }
-    }
+    //}
     // uint32_t value = (uint32_t) cpu.pc + 4;
     // cpu.mem[cpu.regs[31].uinteger64 - 8] = (0xff000000 & value) >> 24;
     // cpu.mem[cpu.regs[31].uinteger64 - 7] = (0x00ff0000 & value) >> 16;
     // cpu.mem[cpu.regs[31].uinteger64 - 6] = (0x0000ff00 & value) >> 8;
     // cpu.mem[cpu.regs[31].uinteger64 - 5] = 0xff & value;
-    uint32_t value = (uint32_t) cpu.pc + 4;
-    for(int i = 0; i < 4; i++){
-        cpu.mem[cpu.regs[31].uinteger64 - 8 + i] = (((long)0xff << i * 8) & value) >> i * 8;
-    }
+    //uint32_t value = (uint32_t) cpu.pc + 4;
+    cpu.mem[cpu.regs[31].uinteger64 - 8] = cpu.pc + 4;
+    // for(int i = 0; i < 4; i++){
+    //     cpu.mem[cpu.regs[31].uinteger64 - 8 + i] = (((long)0xff << i * 8) & value) >> i * 8;
+    // }
     cpu.pc = cpu.regs[rd].uinteger64;
     return 0;
 }
 
 int ret(){
-    for(int i = 0; i < 8; i++){
-        if(memCheck(cpu.regs[31].uinteger64 - 8 + i) != 0){
+    //for(int i = 0; i < 8; i++){
+        if(memCheck(cpu.regs[31].uinteger64 - 8) != 0){
             return -1;
         }
-    }
-    uint64_t val = 0;
-    for(int i = 0; i < 8; i++){
-        val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 8 + i] << (i * 8);
-    }
+    //}
+    // uint64_t val = 0;
+    // for(int i = 0; i < 8; i++){
+    //     val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 8 + i] << (i * 8);
+    // }
     // val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 4] << 56;
     // val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 3] << 48;
     // val |= (uint64_t) cpu.mem[cpu.regs[31].uinteger64 - 2] << 40;
@@ -167,7 +168,8 @@ int ret(){
     // val |= cpu.mem[cpu.regs[31].uinteger64 - 7] << 16;
     // val |= cpu.mem[cpu.regs[31].uinteger64 - 6] << 8;
     // val |= cpu.mem[cpu.regs[31].uinteger64 - 5];
-    cpu.pc = val;
+    // cpu.pc = val;
+    cpu.pc = cpu.mem[cpu.regs[31].uinteger64 - 8];
     return 0;
 }
 
@@ -388,6 +390,7 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
             }
             return -1;
         case 31:
+            cpu.pc += 4;
             return 1;
         default:
             return -1;
