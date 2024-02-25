@@ -24,69 +24,69 @@ typedef struct CPU {
 
 int memCheck(uint64_t index);
 
-int add(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int add(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void addi(uint64_t rd, uint64_t l, CPU* cpu);
+int addi(uint64_t rd, uint64_t l);
 
-void sub(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int sub(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void subi(uint64_t rd, uint64_t l, CPU* cpu);
+int subi(uint64_t rd, uint64_t l);
 
-void mul(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int mul(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void divide(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int divide(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void and(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int and(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void or(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int or(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void xor(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int xor(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void not(uint64_t rd, uint64_t rs, CPU* cpu);
+int not(uint64_t rd, uint64_t rs);
 
-void shftr(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int shftr(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void shftri(uint64_t rd, uint64_t l, CPU* cpu);
+int shftri(uint64_t rd, uint64_t l);
 
-void shftl(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int shftl(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void shftli(uint64_t rd, uint64_t l, CPU* cpu);
+int shftli(uint64_t rd, uint64_t l);
 
-void br(uint64_t rd, CPU* cpu);
+int br(uint64_t rd);
 
-void brrReg(uint64_t rd, CPU* cpu);
+int brrReg(uint64_t rd);
 
-void brrL(uint64_t l, CPU* cpu);
+int brrL(uint64_t l);
 
-void brnz(uint64_t rd, uint64_t rs, CPU* cpu);
+int brnz(uint64_t rd, uint64_t rs);
 
-int call(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int call(uint64_t rd, uint64_t rs, uint64_t rt);
 
-int ret(CPU* cpu);
+int ret();
 
-void brgt(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int brgt(uint64_t rd, uint64_t rs, uint64_t rt);
 
-int movReadMemStoreReg(uint64_t rd, uint64_t rs, uint64_t l, CPU* cpu);
+int movReadMemStoreReg(uint64_t rd, uint64_t rs, uint64_t l);
 
-void movReadRegStoreReg(uint64_t rd, uint64_t rs, CPU* cpu);
+int movReadRegStoreReg(uint64_t rd, uint64_t rs);
 
-void movSetBits(uint64_t rd, uint64_t l, CPU* cpu);
+int movSetBits(uint64_t rd, uint64_t l);
 
-int movReadRegStoreMem(uint64_t rd, uint64_t rs, uint64_t l, CPU* cpu);
+int movReadRegStoreMem(uint64_t rd, uint64_t rs, uint64_t l);
 
-void addf(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int addf(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void subf(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int subf(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void mulf(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int mulf(uint64_t rd, uint64_t rs, uint64_t rt);
 
-void divf(uint64_t rd, uint64_t rs, uint64_t rt, CPU* cpu);
+int divf(uint64_t rd, uint64_t rs, uint64_t rt);
 
-int in(uint64_t rd, uint64_t rs, CPU* cpu);
+int in(uint64_t rd, uint64_t rs);
 
-int out(uint64_t rd, uint64_t rs, CPU* cpu);
+int out(uint64_t rd, uint64_t rs);
 
-int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l, CPU* cpu);
+int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l);
 
 int readBinary(FILE* f);
 
