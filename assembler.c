@@ -35,7 +35,6 @@ int main(int argc, char** argv){
         exit(1);
     }
     firstPass(fp);
-    fclose(fp);
     char* outFile = (char*) calloc(sizeof(char) * strlen(argv[1]) + 2, 1);
     for(int i = 0; i < strlen(argv[1]); i++){
         outFile[i] = argv[1][i];
