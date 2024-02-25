@@ -22,7 +22,7 @@ typedef struct CPU {
     uint64_t pc;
 }CPU;
 
-CPU cpu;
+//CPU cpu;
 
 int memCheck(uint64_t index);
 
