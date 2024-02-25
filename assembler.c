@@ -405,9 +405,15 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                 tmp[k++] = cmdParams[x++];
             }
             x+=2;
+            if(cmdParams[x] == ' '){
+                x++;
+            }
+            //printf("tmp: %s\n", tmp);
             if(strchr(tmp, 'r') != NULL){
                 char* reg = strtok(tmp, "r");
-                uint16_t regNum = atoi(reg);
+                //printf("regnumber: %s\n", reg);
+                char* ptr;
+                uint32_t regNum = strtoul(reg, &ptr, 10);
                 instruction[nextReg] = regNum;
                 nextReg++;
             }
