@@ -279,6 +279,7 @@ int checkValid(char* cmdName, char* cmdParams, int emptyParams){
     else{
         return 0;
     }
+    return 0;
 }
 
 int read(FILE* fp, char* outFile){
