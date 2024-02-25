@@ -19,7 +19,6 @@ typedef union reg {
 typedef struct CPU {
     reg regs[NUM_REGS];
     uint8_t mem[MEM_SIZE];
-    uint64_t pc;
 }CPU;
 
 int memCheck(uint64_t index);

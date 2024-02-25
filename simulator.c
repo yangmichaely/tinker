@@ -9,6 +9,7 @@
 
 CPU cpu;
 int nextMem;
+uint64_t pc;
 
 int main(int argc, char** argv){
     FILE* f = fopen(argv[1], "rb\0");
@@ -41,111 +42,111 @@ int memCheck(uint64_t index){
 
 int add(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].sinteger64 = cpu.regs[rs].sinteger64 + cpu.regs[rt].sinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int addi(uint64_t rd, uint64_t l){
     cpu.regs[rd].uinteger64 += l;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int sub(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].sinteger64 = cpu.regs[rs].sinteger64 - cpu.regs[rt].sinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int subi(uint64_t rd, uint64_t l){
     cpu.regs[rd].sinteger64 -= l;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int mul(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].sinteger64 = cpu.regs[rs].sinteger64 * cpu.regs[rt].sinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int divide(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].sinteger64 = cpu.regs[rs].sinteger64 / cpu.regs[rt].sinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int and(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64 & cpu.regs[rt].uinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int or(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64 | cpu.regs[rt].uinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int xor(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64 ^ cpu.regs[rt].uinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int not(uint64_t rd, uint64_t rs){
     cpu.regs[rd].uinteger64 = ~cpu.regs[rs].uinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int shftr(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64 >> cpu.regs[rt].uinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int shftri(uint64_t rd, uint64_t l){
     cpu.regs[rd].uinteger64 = cpu.regs[rd].uinteger64 >> l;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int shftl(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64 << cpu.regs[rt].uinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int shftli(uint64_t rd, uint64_t l){
     cpu.regs[rd].uinteger64 = cpu.regs[rd].uinteger64 << l;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int br(uint64_t rd){
-    cpu.pc = cpu.regs[rd].uinteger64;
-    return cpu.pc;
+    pc = cpu.regs[rd].uinteger64;
+    return pc;
 }
 
 int brrReg(uint64_t rd){
-    cpu.pc += cpu.regs[rd].uinteger64;
-    return cpu.pc;
+    pc += cpu.regs[rd].uinteger64;
+    return pc;
 }
 
 int brrL(uint64_t l){
-    cpu.pc += l;
-    return cpu.pc;
+    pc += l;
+    return pc;
 }
 
 int brnz(uint64_t rd, uint64_t rs){
     if(cpu.regs[rs].uinteger64 == 0){
-        cpu.pc += 4;
+        pc += 4;
     }
     else{
-        cpu.pc = cpu.regs[rd].uinteger64;
+        pc = cpu.regs[rd].uinteger64;
     }
-    return cpu.pc;
+    return pc;
 }
 
 int call(uint64_t rd, uint64_t rs, uint64_t rt){
@@ -154,18 +155,18 @@ int call(uint64_t rd, uint64_t rs, uint64_t rt){
             return -1;
         }
     //}
-    // uint32_t value = (uint32_t) cpu.pc + 4;
+    // uint32_t value = (uint32_t) pc + 4;
     // cpu.mem[cpu.regs[31].uinteger64 - 8] = (0xff000000 & value) >> 24;
     // cpu.mem[cpu.regs[31].uinteger64 - 7] = (0x00ff0000 & value) >> 16;
     // cpu.mem[cpu.regs[31].uinteger64 - 6] = (0x0000ff00 & value) >> 8;
     // cpu.mem[cpu.regs[31].uinteger64 - 5] = 0xff & value;
-    //uint32_t value = (uint32_t) cpu.pc + 4;
-    cpu.mem[cpu.regs[31].uinteger64 - 8] = cpu.pc + 4;
+    //uint32_t value = (uint32_t) pc + 4;
+    cpu.mem[cpu.regs[31].uinteger64 - 8] = pc + 4;
     // for(int i = 0; i < 4; i++){
     //     cpu.mem[cpu.regs[31].uinteger64 - 8 + i] = (((long)0xff << i * 8) & value) >> i * 8;
     // }
-    cpu.pc = cpu.regs[rd].uinteger64;
-    return cpu.pc;
+    pc = cpu.regs[rd].uinteger64;
+    return pc;
 }
 
 int ret(){
@@ -186,19 +187,19 @@ int ret(){
     // val |= cpu.mem[cpu.regs[31].uinteger64 - 7] << 16;
     // val |= cpu.mem[cpu.regs[31].uinteger64 - 6] << 8;
     // val |= cpu.mem[cpu.regs[31].uinteger64 - 5];
-    // cpu.pc = val;
-    cpu.pc = cpu.mem[cpu.regs[31].uinteger64 - 8];
-    return cpu.pc;
+    // pc = val;
+    pc = cpu.mem[cpu.regs[31].uinteger64 - 8];
+    return pc;
 }
 
 int brgt(uint64_t rd, uint64_t rs, uint64_t rt){
     if(cpu.regs[rs].sinteger64 <= cpu.regs[rt].sinteger64){
-        cpu.pc += 4;
+        pc += 4;
     }
     else{
-        cpu.pc = cpu.regs[rd].uinteger64;
+        pc = cpu.regs[rd].uinteger64;
     }
-    return cpu.pc;
+    return pc;
 }
 
 int movReadMemStoreReg(uint64_t rd, uint64_t rs, uint64_t l){
@@ -220,21 +221,21 @@ int movReadMemStoreReg(uint64_t rd, uint64_t rs, uint64_t l){
     // val |= cpu.mem[cpu.regs[rs].uinteger64 + l + 2] << 8;
     // val |= cpu.mem[cpu.regs[rs].uinteger64 + l + 3];
     cpu.regs[rd].uinteger64 = val;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int movReadRegStoreReg(uint64_t rd, uint64_t rs){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int movSetBits(uint64_t rd, uint64_t l){
     cpu.regs[rd].uinteger64 &= 0xfffffffffffff000;
     cpu.regs[rd].uinteger64 |= l;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int movReadRegStoreMem(uint64_t rd, uint64_t rs, uint64_t l){
@@ -255,48 +256,48 @@ int movReadRegStoreMem(uint64_t rd, uint64_t rs, uint64_t l){
     // cpu.mem[cpu.regs[rd].uinteger64 + l + 5] = (0x00ff000000000000 & value) >> 48;
     // cpu.mem[cpu.regs[rd].uinteger64 + l + 6] = (0x0000ff0000000000 & value) >> 40;
     // cpu.mem[cpu.regs[rd].uinteger64 + l + 7] = 0x000000ff00000000 & value >> 32;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int addf(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].floatingPoint = cpu.regs[rs].floatingPoint + cpu.regs[rt].floatingPoint;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int subf(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].floatingPoint = cpu.regs[rs].floatingPoint - cpu.regs[rt].floatingPoint;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int mulf(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].floatingPoint = cpu.regs[rs].floatingPoint * cpu.regs[rt].floatingPoint;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int divf(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].floatingPoint = cpu.regs[rs].floatingPoint / cpu.regs[rt].floatingPoint;
-    cpu.pc += 4;
-    return cpu.pc;
+    pc += 4;
+    return pc;
 }
 
 int in(uint64_t rd, uint64_t rs){
     if(cpu.regs[rs].uinteger64 == 0){
         scanf("%lu", &cpu.regs[rd].uinteger64);
-        cpu.pc += 4;
+        pc += 4;
     }
-    return cpu.pc;
+    return pc;
 }
 
 int out(uint64_t rd, uint64_t rs){
     if(cpu.regs[rd].uinteger64 == 1){
         printf("%lu\n", cpu.regs[rs].uinteger64);
-        cpu.pc += 4;
+        pc += 4;
     }
-    return cpu.pc;
+    return pc;
 }
 
 int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l){
@@ -406,24 +407,24 @@ int readBinary(FILE* f){
     uint8_t binary = 0;
     cpu.regs[31].uinteger64 = MEM_SIZE;
     int check = 0;
-    cpu.pc = 0;
+    pc = 0;
     // rewind(f);
     nextMem = 0;
     while(fread(&binary, sizeof(binary), 1, f) == 1){
         cpu.mem[nextMem] = binary;
         nextMem++;
     }
-    while(cpu.pc < nextMem){
+    while(pc < nextMem){
         for(int i = 0; i < 4; i++){
-            if(memCheck(cpu.pc + i) != 0){
+            if(memCheck(pc + i) != 0){
                 return -1;
             }
         }
         uint64_t instr = 0;
-        instr |= cpu.mem[cpu.pc];
-        instr |= cpu.mem[cpu.pc + 1] << 8;
-        instr |= cpu.mem[cpu.pc + 2] << 16;
-        instr |= cpu.mem[cpu.pc + 3] << 24;
+        instr |= cpu.mem[pc];
+        instr |= cpu.mem[pc + 1] << 8;
+        instr |= cpu.mem[pc + 2] << 16;
+        instr |= cpu.mem[pc + 3] << 24;
         uint64_t opcode = (instr >> 27) & 0x1f;
         uint64_t rd = (instr >> 22) & 0x1f;
         uint64_t rs = (instr >> 17) & 0x1f;
@@ -446,7 +447,7 @@ int readBinary(FILE* f){
             fprintf(stderr, "%s\n", "Simulation error");
             exit(-1);
         }
-        cpu.pc = check;
+        pc = check;
     }
     return 0;
 }
