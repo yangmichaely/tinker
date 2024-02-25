@@ -14,8 +14,8 @@ char* VALID_COMMANDS[36] = {"add", "addi", "sub", "subi", "mul", "div", "and", "
 
 char* VALID_PARAMETERS[36] = {"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1])$",
 "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1])$", 
-"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [0-9]+|:[a-zA-Z0-9_-]+$", "^[-+]?[0-9]+|:[a-zA-Z0-9_-]+$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [(r([0-9]|1[0-9]|2[0-9]|3[0-1]))][(-?[0-9]+|:[a-zA-Z0-9_-]+)]$", 
-"^[(r([0-9]|1[0-9]|2[0-9]|3[0-1]))][([-+]?[0-9]+|:[a-zA-Z0-9_-]+)], r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^[a-zA-Z0-9_-]+$"};
+"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [0-9]+|:[a-zA-Z0-9_-]+$", "^[-+]?[0-9]+|:[a-zA-Z0-9_-]+$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), \\(r([0-9]|1[0-9]|2[0-9]|3[0-1])\\)\\([-+]?[0-9]+|:[a-zA-Z0-9_-]+\\)$", 
+"^\\(r([0-9]|1[0-9]|2[0-9]|3[0-1])\\)\\([-+]?[0-9]+|:[a-zA-Z0-9_-]+\\), r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^[a-zA-Z0-9_-]+$"};
 
 int lines;
 int avail;
@@ -504,7 +504,7 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
         fwrite(&binInstruction, sizeof(binInstruction), 1, out);
     }
     else if(cmdNum == 35){
-        binInstruction = calcShifts(0, 0, 31, instruction[1], 22);
+        binInstruction = calcShifts(0, 0, 31, instruction[1], 21);
         fwrite(&binInstruction, sizeof(binInstruction), 1, out);
         binInstruction = calcShifts(8, 0, 0, 31, 1);
         fwrite(&binInstruction, sizeof(binInstruction), 1, out);
