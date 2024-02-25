@@ -25,14 +25,14 @@ int main(int argc, char** argv){
     FILE* fp = fopen(argv[1], "r\0");
     if(fp == NULL){
         fprintf(stderr, "%s", "Invalid tinker filepath\n");
-        return -1;
+        exit(-1);
     }
     char k = argv[1][strlen(argv[1]) - 1];
     char t = argv[1][strlen(argv[1]) - 2];
     char dot = argv[1][strlen(argv[1]) - 3];
     if(k != 'k' || t != 't' || dot != '.'){
         fprintf(stderr, "%s", "Invalid tinker filepath\n");
-        return -1;
+        exit(-1);
     }
     if(firstPass(fp) != 1){
         fclose(fp);
@@ -111,7 +111,7 @@ int firstPass(FILE* fp){
         if(strchr(buffer, '\n') == NULL){
             fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
             free(buffer);
-            return -1;
+            exit(-1);
         }
         buffer[strcspn(buffer, "\n")] = '\0';
         char c = buffer[0];
@@ -129,7 +129,7 @@ int firstPass(FILE* fp){
                 fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
                 freeList(head);
                 free(buffer);
-                return -1;
+                exit(-1);
             }
         }
         else if(c == '\t'){
@@ -165,7 +165,7 @@ int firstPass(FILE* fp){
                 regfree(&regex);
                 freeList(head);
                 free(buffer);
-                return -1;
+                exit(-1);
             }
             regfree(&regex);
             insert(name, mem, strlen(name));
@@ -174,7 +174,7 @@ int firstPass(FILE* fp){
             fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
             freeList(head);
             free(buffer);
-            return -1;
+            exit(-1);
         }
         free(buffer);
     }
@@ -326,7 +326,7 @@ int read(FILE* fp, char* outFile){
                     free(cmdName);
                     free(buffer);
                     freeList(head);
-                    return -1;
+                    exit(-1);
                 }
                 for(int h = 0; h < 36; h++){
                     if(strcmp(cmdName, VALID_COMMANDS[h]) == 0){
@@ -339,7 +339,7 @@ int read(FILE* fp, char* outFile){
                                 free(cmdName);
                                 freeList(head);
                                 free(buffer);
-                                return -1;
+                                exit(-1);
                             }
                         }
                     }
@@ -355,7 +355,7 @@ int read(FILE* fp, char* outFile){
                         remove(outFile);
                         free(buffer);
                         freeList(head);
-                        return -1;
+                        exit(-1);
                     }
                 }
                 uint64_t max = 18446744073709551615ULL;
@@ -367,7 +367,7 @@ int read(FILE* fp, char* outFile){
                     remove(outFile);
                     free(buffer);
                     freeList(head);
-                    return -1;
+                    exit(-1);
                 }
                 fwrite(&dataVal, sizeof(dataVal), 1, out);
             }

@@ -14,7 +14,7 @@ int main(int argc, char** argv){
     FILE* f = fopen(argv[1], "rb\0");
     if(f == NULL){
         fprintf(stderr, "%s", "Invalid tko filepath\n");
-        return -1;
+        exit(-1);
     }
     char o = argv[1][strlen(argv[1]) - 1];
     char k = argv[1][strlen(argv[1]) - 2];
@@ -22,7 +22,7 @@ int main(int argc, char** argv){
     char dot = argv[1][strlen(argv[1]) - 4];
     if(k != 'k' || t != 't' || dot != '.' || o != 'o'){
         fprintf(stderr, "%s", "Invalid tinker filepath\n");
-        return -1;
+        exit(-1);
     }
     if(readBinary(f) != 0){
         fclose(f);
@@ -392,7 +392,7 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
         default:
             return -1;
     }
-    return 0;
+    //return 0;
 }
 
 int readBinary(FILE* f){
@@ -444,7 +444,7 @@ int readBinary(FILE* f){
         check = interpret(opcode, rd, rs, rt, l);
         if(check == -1){
             fprintf(stderr, "%s\n", "Simulation error");
-            return -1;
+            exit(-1);
         }
         if(check == 1){
             return 0;
