@@ -397,36 +397,36 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
 }
 
 int readBinary(FILE* f){
-    CPU cpu;
+    CPU* cpu;
     for(int i = 0; i < MEM_SIZE; i++){
-        cpu.mem[i] = 0;
+        cpu -> mem[i] = 0;
     }
     for(int i = 0; i < NUM_REGS; i++){
-        cpu.regs[i].uinteger64 = 0;
+        cpu -> regs[i].uinteger64 = 0;
     }
     // fseek(f, 0, SEEK_END);
     // int length = ftell(f);
     uint8_t binary = 0;
-    cpu.regs[31].uinteger64 = MEM_SIZE;
+    cpu -> regs[31].uinteger64 = MEM_SIZE;
     int check = 0;
-    cpu.pc = 0;
+    cpu -> pc = 0;
     // rewind(f);
     nextMem = 0;
     while(fread(&binary, sizeof(binary), 1, f) == 1){
-        cpu.mem[nextMem] = binary;
+        cpu -> mem[nextMem] = binary;
         nextMem++;
     }
-    while(cpu.pc < nextMem){
+    while(cpu -> pc < nextMem){
         for(int i = 0; i < 4; i++){
-            if(memCheck(cpu.pc + i) != 0){
+            if(memCheck(cpu -> pc + i) != 0){
                 return -1;
             }
         }
         uint64_t instr = 0;
-        instr |= cpu.mem[cpu.pc];
-        instr |= cpu.mem[cpu.pc + 1] << 8;
-        instr |= cpu.mem[cpu.pc + 2] << 16;
-        instr |= cpu.mem[cpu.pc + 3] << 24;
+        instr |= cpu -> mem[cpu -> pc];
+        instr |= cpu -> mem[cpu -> pc + 1] << 8;
+        instr |= cpu -> mem[cpu -> pc + 2] << 16;
+        instr |= cpu -> mem[cpu -> pc + 3] << 24;
         uint64_t opcode = (instr >> 27) & 0x1f;
         uint64_t rd = (instr >> 22) & 0x1f;
         uint64_t rs = (instr >> 17) & 0x1f;
