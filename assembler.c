@@ -14,7 +14,7 @@ char* VALID_COMMANDS[36] = {"add", "addi", "sub", "subi", "mul", "div", "and", "
 
 char* VALID_PARAMETERS[36] = {"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1])$",
 "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1])$", 
-"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [0-9]+|:[a-zA-Z0-9_-]+$", "^[-+]?[0-9]+|:[a-zA-Z0-9_-]+$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), \\(r([0-9]|1[0-9]|2[0-9]|3[0-1])\\)\\([-+]?[0-9]+|:[a-zA-Z0-9_-]+\\)$", 
+"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [0-9]+|:[a-zA-Z0-9_-]+$", "^[-+]?[0-9]+|:[a-zA-Z0-9_-]+$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), \\(r([0-9]|1[0-9]|2[0-9]|3[0-1])\\)\\(-?[0-9]+|:[a-zA-Z0-9_-]+\\)$", 
 "^\\(r([0-9]|1[0-9]|2[0-9]|3[0-1])\\)\\([-+]?[0-9]+|:[a-zA-Z0-9_-]+\\), r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^[a-zA-Z0-9_-]+$"};
 
 int lines;
@@ -109,7 +109,7 @@ int firstPass(FILE* fp){
         char* buffer = (char*) calloc(512 * sizeof(char), 1);
         fgets(buffer, 512, fp);
         if(strchr(buffer, '\n') == NULL){
-            fprintf(stderr, "%s%d\n", "eError on line ", i + 1);
+            fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
             free(buffer);
             exit(-1);
         }
@@ -126,7 +126,7 @@ int firstPass(FILE* fp){
                 data = 0;
             }
             else{
-                fprintf(stderr, "%s%d\n", "dError on line ", i + 1);
+                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
                 freeList(head);
                 free(buffer);
                 exit(-1);
@@ -161,7 +161,7 @@ int firstPass(FILE* fp){
             regex_t regex;
             regcomp(&regex, VALID_PARAMETERS[7], REG_EXTENDED);
             if(strlen(name) > 255 || regexec(&regex, name, 0, NULL, 0) != 0 || found != -1){
-                fprintf(stderr, "%s%d\n", "cError on line ", i + 1);
+                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
                 regfree(&regex);
                 freeList(head);
                 free(buffer);
@@ -171,7 +171,7 @@ int firstPass(FILE* fp){
             insert(name, mem, strlen(name));
         }
         else if(c != ';'){
-            fprintf(stderr, "%s%d\n", "bError on line ", i + 1);
+            fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
             freeList(head);
             free(buffer);
             exit(-1);
@@ -319,7 +319,7 @@ int read(FILE* fp, char* outFile){
                 }
                 int check = checkValid(cmdName, cmdParams, emptyParams);
                 if(check == 0){
-                    fprintf(stderr, "%s%d\n", "aError on line ", i + 1);
+                    fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
                     remove(outFile);
                     fclose(out);
                     free(cmdParams);
