@@ -9,7 +9,6 @@
 
 CPU cpu;
 int nextMem;
-uint64_t pc;
 
 int main(int argc, char** argv){
     FILE* f = fopen(argv[1], "rb\0");
@@ -42,111 +41,93 @@ int memCheck(uint64_t index){
 
 int add(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].sinteger64 = cpu.regs[rs].sinteger64 + cpu.regs[rt].sinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int addi(uint64_t rd, uint64_t l){
+void addi(uint64_t rd, uint64_t l){
     cpu.regs[rd].uinteger64 += l;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int sub(uint64_t rd, uint64_t rs, uint64_t rt){
+void sub(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].sinteger64 = cpu.regs[rs].sinteger64 - cpu.regs[rt].sinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int subi(uint64_t rd, uint64_t l){
+void subi(uint64_t rd, uint64_t l){
     cpu.regs[rd].sinteger64 -= l;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int mul(uint64_t rd, uint64_t rs, uint64_t rt){
+void mul(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].sinteger64 = cpu.regs[rs].sinteger64 * cpu.regs[rt].sinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int divide(uint64_t rd, uint64_t rs, uint64_t rt){
+void divide(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].sinteger64 = cpu.regs[rs].sinteger64 / cpu.regs[rt].sinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int and(uint64_t rd, uint64_t rs, uint64_t rt){
+void and(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64 & cpu.regs[rt].uinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int or(uint64_t rd, uint64_t rs, uint64_t rt){
+void or(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64 | cpu.regs[rt].uinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int xor(uint64_t rd, uint64_t rs, uint64_t rt){
+void xor(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64 ^ cpu.regs[rt].uinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int not(uint64_t rd, uint64_t rs){
+void not(uint64_t rd, uint64_t rs){
     cpu.regs[rd].uinteger64 = ~cpu.regs[rs].uinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int shftr(uint64_t rd, uint64_t rs, uint64_t rt){
+void shftr(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64 >> cpu.regs[rt].uinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int shftri(uint64_t rd, uint64_t l){
+void shftri(uint64_t rd, uint64_t l){
     cpu.regs[rd].uinteger64 = cpu.regs[rd].uinteger64 >> l;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int shftl(uint64_t rd, uint64_t rs, uint64_t rt){
+void shftl(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64 << cpu.regs[rt].uinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int shftli(uint64_t rd, uint64_t l){
+void shftli(uint64_t rd, uint64_t l){
     cpu.regs[rd].uinteger64 = cpu.regs[rd].uinteger64 << l;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int br(uint64_t rd){
-    pc = cpu.regs[rd].uinteger64;
-    return pc;
+void br(uint64_t rd){
+    cpu.pc = cpu.regs[rd].uinteger64;
 }
 
-int brrReg(uint64_t rd){
-    pc += cpu.regs[rd].uinteger64;
-    return pc;
+void brrReg(uint64_t rd){
+    cpu.pc += cpu.regs[rd].uinteger64;
 }
 
-int brrL(uint64_t l){
-    pc += l;
-    return pc;
+void brrL(uint64_t l){
+    cpu.pc += l;
 }
 
-int brnz(uint64_t rd, uint64_t rs){
+void brnz(uint64_t rd, uint64_t rs){
     if(cpu.regs[rs].uinteger64 == 0){
-        pc += 4;
+        cpu.pc += 4;
     }
     else{
-        pc = cpu.regs[rd].uinteger64;
+        cpu.pc = cpu.regs[rd].uinteger64;
     }
-    return pc;
 }
 
 int call(uint64_t rd, uint64_t rs, uint64_t rt){
@@ -155,18 +136,18 @@ int call(uint64_t rd, uint64_t rs, uint64_t rt){
             return -1;
         }
     //}
-    // uint32_t value = (uint32_t) pc + 4;
+    // uint32_t value = (uint32_t) cpu.pc + 4;
     // cpu.mem[cpu.regs[31].uinteger64 - 8] = (0xff000000 & value) >> 24;
     // cpu.mem[cpu.regs[31].uinteger64 - 7] = (0x00ff0000 & value) >> 16;
     // cpu.mem[cpu.regs[31].uinteger64 - 6] = (0x0000ff00 & value) >> 8;
     // cpu.mem[cpu.regs[31].uinteger64 - 5] = 0xff & value;
-    //uint32_t value = (uint32_t) pc + 4;
-    cpu.mem[cpu.regs[31].uinteger64 - 8] = pc + 4;
+    //uint32_t value = (uint32_t) cpu.pc + 4;
+    cpu.mem[cpu.regs[31].uinteger64 - 8] = cpu.pc + 4;
     // for(int i = 0; i < 4; i++){
     //     cpu.mem[cpu.regs[31].uinteger64 - 8 + i] = (((long)0xff << i * 8) & value) >> i * 8;
     // }
-    pc = cpu.regs[rd].uinteger64;
-    return pc;
+    cpu.pc = cpu.regs[rd].uinteger64;
+    return 0;
 }
 
 int ret(){
@@ -187,19 +168,18 @@ int ret(){
     // val |= cpu.mem[cpu.regs[31].uinteger64 - 7] << 16;
     // val |= cpu.mem[cpu.regs[31].uinteger64 - 6] << 8;
     // val |= cpu.mem[cpu.regs[31].uinteger64 - 5];
-    // pc = val;
-    pc = cpu.mem[cpu.regs[31].uinteger64 - 8];
-    return pc;
+    // cpu.pc = val;
+    cpu.pc = cpu.mem[cpu.regs[31].uinteger64 - 8];
+    return 0;
 }
 
-int brgt(uint64_t rd, uint64_t rs, uint64_t rt){
+void brgt(uint64_t rd, uint64_t rs, uint64_t rt){
     if(cpu.regs[rs].sinteger64 <= cpu.regs[rt].sinteger64){
-        pc += 4;
+        cpu.pc += 4;
     }
     else{
-        pc = cpu.regs[rd].uinteger64;
+        cpu.pc = cpu.regs[rd].uinteger64;
     }
-    return pc;
 }
 
 int movReadMemStoreReg(uint64_t rd, uint64_t rs, uint64_t l){
@@ -221,21 +201,19 @@ int movReadMemStoreReg(uint64_t rd, uint64_t rs, uint64_t l){
     // val |= cpu.mem[cpu.regs[rs].uinteger64 + l + 2] << 8;
     // val |= cpu.mem[cpu.regs[rs].uinteger64 + l + 3];
     cpu.regs[rd].uinteger64 = val;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
+    return 0;
 }
 
-int movReadRegStoreReg(uint64_t rd, uint64_t rs){
+void movReadRegStoreReg(uint64_t rd, uint64_t rs){
     cpu.regs[rd].uinteger64 = cpu.regs[rs].uinteger64;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int movSetBits(uint64_t rd, uint64_t l){
+void movSetBits(uint64_t rd, uint64_t l){
     cpu.regs[rd].uinteger64 &= 0xfffffffffffff000;
     cpu.regs[rd].uinteger64 |= l;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
 int movReadRegStoreMem(uint64_t rd, uint64_t rs, uint64_t l){
@@ -256,139 +234,162 @@ int movReadRegStoreMem(uint64_t rd, uint64_t rs, uint64_t l){
     // cpu.mem[cpu.regs[rd].uinteger64 + l + 5] = (0x00ff000000000000 & value) >> 48;
     // cpu.mem[cpu.regs[rd].uinteger64 + l + 6] = (0x0000ff0000000000 & value) >> 40;
     // cpu.mem[cpu.regs[rd].uinteger64 + l + 7] = 0x000000ff00000000 & value >> 32;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
+    return 0;
 }
 
-int addf(uint64_t rd, uint64_t rs, uint64_t rt){
+void addf(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].floatingPoint = cpu.regs[rs].floatingPoint + cpu.regs[rt].floatingPoint;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int subf(uint64_t rd, uint64_t rs, uint64_t rt){
+void subf(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].floatingPoint = cpu.regs[rs].floatingPoint - cpu.regs[rt].floatingPoint;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int mulf(uint64_t rd, uint64_t rs, uint64_t rt){
+void mulf(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].floatingPoint = cpu.regs[rs].floatingPoint * cpu.regs[rt].floatingPoint;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
-int divf(uint64_t rd, uint64_t rs, uint64_t rt){
+void divf(uint64_t rd, uint64_t rs, uint64_t rt){
     cpu.regs[rd].floatingPoint = cpu.regs[rs].floatingPoint / cpu.regs[rt].floatingPoint;
-    pc += 4;
-    return pc;
+    cpu.pc += 4;
 }
 
 int in(uint64_t rd, uint64_t rs){
     if(cpu.regs[rs].uinteger64 == 0){
         scanf("%lu", &cpu.regs[rd].uinteger64);
-        pc += 4;
+        cpu.pc += 4;
+        return 0;
     }
-    return pc;
 }
 
 int out(uint64_t rd, uint64_t rs){
     if(cpu.regs[rd].uinteger64 == 1){
         printf("%lu\n", cpu.regs[rs].uinteger64);
-        pc += 4;
+        cpu.pc += 4;
+        return 0;
     }
-    return pc;
 }
 
 int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l){
-    int ans = 0;
     switch (opcode){
         case 0:
-            return add(rd, rs, rt);
+            add(rd, rs, rt);
+            return 0;
         case 1:
-            return addi(rd, l);
+            addi(rd, l);
+            return 0;
         case 2:
-            return sub(rd, rs, rt);
+            sub(rd, rs, rt);
+            return 0;
         case 3:
-            return subi(rd, l);
+            subi(rd, l);
+            return 0;
         case 4:
-            return mul(rd, rs, rt);
+            mul(rd, rs, rt);
+            return 0;
         case 5:
             if(rt == 0){
                 return -1;
             }
-            return divide(rd, rs, rt);
+            divide(rd, rs, rt);
+            return 0;
         case 6:
-            return and(rd, rs, rt);
+            and(rd, rs, rt);
+            return 0;
         case 7:
-            return or(rd, rs, rt);
+            or(rd, rs, rt);
+            return 0;
         case 8:
-            return xor(rd, rs, rt);
+            xor(rd, rs, rt);
+            return 0;
         case 9:
-            return not(rd, rs);
+            not(rd, rs);
+            return 0;
         case 10:
-            return shftr(rd, rs, rt);
+            shftr(rd, rs, rt);
+            return 0;
         case 11:
-            return shftri(rd, l);
+            shftri(rd, l);
+            return 0;
         case 12:
-            return shftl(rd, rs, rt);
+            shftl(rd, rs, rt);
+            return 0;
         case 13:
-            return shftli(rd, l);
+            shftli(rd, l);
+            return 0;
         case 14:
-            return br(rd);
+            br(rd);
+            return 0;
         case 15:
-            return brrReg(rd);
+            brrReg(rd);
+            return 0;
         case 16:
-            return brrReg(l);
+            brrReg(l);
+            return 0;
         case 17:
-            return brnz(rd, rs);
+            brnz(rd, rs);
+            return 0;
         case 18:
-            ans = call(rd, rs, rt);
-            if(ans != -1){
-                return ans;
+            if(call(rd, rs, rt) == 0){
+                return 0;
             }
             return -1;
         case 19:
-            ans = ret();
-            if(ans != -1){
-                return ans;
+            if(ret() == 0){
+                return 0;
             }
             return -1;
         case 20:
-            return brgt(rd, rs, rt);
+            brgt(rd, rs, rt);
+            return 0;
         case 21:
-            ans = movReadMemStoreReg(rd, rs, l);
-            if(ans != -1){
-                return ans;
+            if(movReadMemStoreReg(rd, rs, l) == 0){
+                return 0;
             }
             return -1;
         case 22:
-            return movReadRegStoreReg(rd, rs);
+            movReadRegStoreReg(rd, rs);
+            return 0;
         case 23:
-            return movSetBits(rd, l);
+            movSetBits(rd, l);
+            return 0;
         case 24:
-            ans = movReadRegStoreMem(rd, rs, l);
-            if(ans != -1){
-                return ans;
+            if(movReadRegStoreMem(rd, rs, l) == 0){
+                return 0;
             }
             return -1;
         case 25:
-            return addf(rd, rs, rt);
+            addf(rd, rs, rt);
+            return 0;
         case 26:
-            return subf(rd, rs, rt);
+            subf(rd, rs, rt);
+            return 0;
         case 27:
-            return mulf(rd, rs, rt);
+            mulf(rd, rs, rt);
+            return 0;
         case 28:
             if(rt == 0){
                 return -1;
             }
-            return divf(rd, rs, rt);
+            divf(rd, rs, rt);
+            return 0;
         case 29:
-            return in(rd, rs);
+            if(in(rd, rs) == 0){
+                return 0;
+            }
+            return -1;
         case 30:
-            return out(rd, rs);
+            if(out(rd, rs) == 0){
+                return 0;
+            }
+            return -1;
         case 31:
-            exit(0);
+            cpu.pc += 4;
+            return 1;
         default:
             return -1;
     }
@@ -407,24 +408,25 @@ int readBinary(FILE* f){
     uint8_t binary = 0;
     cpu.regs[31].uinteger64 = MEM_SIZE;
     int check = 0;
-    pc = 0;
+    cpu.pc = 0;
     // rewind(f);
     nextMem = 0;
     while(fread(&binary, sizeof(binary), 1, f) == 1){
         cpu.mem[nextMem] = binary;
         nextMem++;
     }
-    while(pc < nextMem){
+    while(cpu.pc < nextMem){
         for(int i = 0; i < 4; i++){
-            if(memCheck(pc + i) != 0){
+            if(memCheck(cpu.pc + i) != 0){
                 return -1;
             }
         }
+        printf("bruh: %lu\n", cpu.pc);
         uint64_t instr = 0;
-        instr |= cpu.mem[pc];
-        instr |= cpu.mem[pc + 1] << 8;
-        instr |= cpu.mem[pc + 2] << 16;
-        instr |= cpu.mem[pc + 3] << 24;
+        instr |= cpu.mem[cpu.pc];
+        instr |= cpu.mem[cpu.pc + 1] << 8;
+        instr |= cpu.mem[cpu.pc + 2] << 16;
+        instr |= cpu.mem[cpu.pc + 3] << 24;
         uint64_t opcode = (instr >> 27) & 0x1f;
         uint64_t rd = (instr >> 22) & 0x1f;
         uint64_t rs = (instr >> 17) & 0x1f;
@@ -447,7 +449,9 @@ int readBinary(FILE* f){
             fprintf(stderr, "%s\n", "Simulation error");
             exit(-1);
         }
-        pc = check;
+        if(check == 1){
+            exit(0);
+        }
     }
     return 0;
 }
