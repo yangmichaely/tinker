@@ -26,7 +26,7 @@ int main(int argc, char** argv){
     }
     if(readBinary(f) != 0){
         fclose(f);
-        return -1;
+        exit(-1);
     }
     fclose(f);
     return 0;
@@ -264,7 +264,6 @@ int in(uint64_t rd, uint64_t rs){
         cpu.pc += 4;
         return 0;
     }
-    return -1;
 }
 
 int out(uint64_t rd, uint64_t rs){
@@ -273,7 +272,6 @@ int out(uint64_t rd, uint64_t rs){
         cpu.pc += 4;
         return 0;
     }
-    return -1;
 }
 
 int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l){
