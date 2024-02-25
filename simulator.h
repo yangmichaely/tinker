@@ -86,7 +86,7 @@ int in(uint64_t rd, uint64_t rs);
 
 int out(uint64_t rd, uint64_t rs);
 
-int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l);
+int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l, uint64_t* pc);
 
 int readBinary(FILE* f);
 

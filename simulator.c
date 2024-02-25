@@ -274,10 +274,10 @@ int out(uint64_t rd, uint64_t rs){
     }
 }
 
-int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l){
+int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l, uint64_t* pc){
     switch (opcode){
         case 0:
-            add(rd, rs, rt);
+            add(rd, rs, rt, *pc);
             return 0;
         case 1:
             addi(rd, l);
@@ -443,7 +443,7 @@ int readBinary(FILE* f){
         // printf("rs: %ld\n", rs);
         // printf("rt: %ld\n", rt);
         // printf("l: %ld\n", l);
-        check = interpret(opcode, rd, rs, rt, l);
+        check = interpret(opcode, rd, rs, rt, l, &cpu.pc);
         if(check == -1){
             fprintf(stderr, "%s\n", "Simulation error");
             exit(-1);
