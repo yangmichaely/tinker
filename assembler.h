@@ -20,11 +20,11 @@ int search(char* name);
 
 void freeList(addr* head);
 
-int firstPass(FILE* fp);
+void firstPass(FILE* fp);
 
 int checkValid(char* cmdName, char* cmdParams, int emptyParams);
 
-int read(FILE* fp, char* outFile);
+void read(FILE* fp, char* outFile);
 
 uint32_t calcShifts(uint64_t l, uint32_t rt, uint32_t rs, uint32_t rd, uint32_t opcode);
 

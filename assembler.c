@@ -34,23 +34,18 @@ int main(int argc, char** argv){
         fprintf(stderr, "%s", "Invalid tinker filepath\n");
         exit(1);
     }
-    if(firstPass(fp) != 1){
-        fclose(fp);
-        exit(1);
-    }
+    firstPass(fp);
+    fclose(fp);
     char* outFile = (char*) calloc(sizeof(char) * strlen(argv[1]) + 2, 1);
     for(int i = 0; i < strlen(argv[1]); i++){
         outFile[i] = argv[1][i];
     }
     outFile[strlen(argv[1])] = 'o';
     outFile[strlen(argv[1]) + 1] = '\0';
-    if(read(fp, outFile) != 1){
-        fclose(fp);
-        exit(1);
-    }
+    read(fp, outFile);
     free(outFile);
     fclose(fp);
-    return -1;
+    return 0;
 }
 
 void insert(char* name, int address, int nameLength){
@@ -93,7 +88,7 @@ void freeList(addr* head){
     }
 }
 
-int firstPass(FILE* fp){
+void firstPass(FILE* fp){
     avail = 0;
     lines = 0;
     int mem = 0;
@@ -178,7 +173,6 @@ int firstPass(FILE* fp){
         }
         free(buffer);
     }
-    return 1;
 }
 
 int checkValid(char* cmdName, char* cmdParams, int emptyParams){
@@ -281,7 +275,7 @@ int checkValid(char* cmdName, char* cmdParams, int emptyParams){
     }
 }
 
-int read(FILE* fp, char* outFile){
+void read(FILE* fp, char* outFile){
     int next = 0;
     rewind(fp);
     int data = 0;
@@ -376,7 +370,6 @@ int read(FILE* fp, char* outFile){
     }
     fclose(out);
     freeList(head);
-    return 1;
 }
 
 uint32_t calcShifts(uint64_t l, uint32_t rt, uint32_t rs, uint32_t rd, uint32_t opcode){
