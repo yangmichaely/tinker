@@ -496,7 +496,9 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
         fwrite(&binInstruction, sizeof(binInstruction), 1, out);
     }
     else if(cmdNum == 34){
-        binInstruction = calcShifts(4088, 0, instruction[1], 31, 25);
+        l = -8;
+        l &= 0xfff;
+        binInstruction = calcShifts(l, 0, instruction[1], 31, 24);
         fwrite(&binInstruction, sizeof(binInstruction), 1, out);
         binInstruction = calcShifts(8, 0, 0, 31, 3);
         fwrite(&binInstruction, sizeof(binInstruction), 1, out);
