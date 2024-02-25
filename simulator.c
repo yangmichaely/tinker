@@ -7,7 +7,6 @@
 #include <limits.h>
 #include <regex.h>
 
-CPU cpu;
 int nextMem;
 
 int main(int argc, char** argv){

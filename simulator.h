@@ -22,6 +22,8 @@ typedef struct CPU {
     uint64_t pc;
 }CPU;
 
+CPU cpu;
+
 int memCheck(uint64_t index);
 
 int add(uint64_t rd, uint64_t rs, uint64_t rt);
