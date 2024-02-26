@@ -230,7 +230,7 @@ int readBinary(FILE* f){
     while(cpu.pc < MEM_SIZE && cpu.pc >= 0){
         for(int i = 0; i < 4; i++){
             if(memCheck(cpu.pc + i) != 0){
-                fprintf(stderr, "%s\n", "Simulation error");
+                fprintf(stderr, "%s\n", "aSimulation error");
                 exit(-1);
             }
         }
@@ -253,13 +253,13 @@ int readBinary(FILE* f){
         }
         check = interpret(opcode, rd, rs, rt, l);
         if(check == -1){
-            fprintf(stderr, "%s\n", "Simulation error");
+            fprintf(stderr, "%s\n", "bSimulation error");
             exit(-1);
         }
         if(check == 1){
             exit(0);
         }
     }
-    fprintf(stderr, "%s\n", "Simulation error");
+    fprintf(stderr, "%s\n", "cSimulation error");
     exit(1);
 }
