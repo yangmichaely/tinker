@@ -191,16 +191,16 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
             cpu.pc += 4;
             return 0;
         case 29:
-            //if(cpu.regs[rs].uinteger64 == 0){
+            if(cpu.regs[rs].uinteger64 == 0){
                 scanf("%lu", &cpu.regs[rd].uinteger64);
                 cpu.pc += 4;
-            //}
+            }
             return 0;
         case 30:
-            //if(cpu.regs[rd].uinteger64 == 1){
+            if(cpu.regs[rd].uinteger64 == 1){
                 printf("%lu\n", cpu.regs[rs].uinteger64);
                 cpu.pc += 4;
-            //}
+            }
             return 0;
         case 31:
             cpu.pc += 4;
@@ -244,11 +244,11 @@ int readBinary(FILE* f){
         uint64_t rs = (instr >> 17) & 0x1f;
         uint64_t rt = (instr >> 12) & 0x1f;
         uint64_t l = instr & 0xfff;
-        // printf("opcode: %ld\n", opcode);
-        // printf("rd: %ld\n", rd);
-        // printf("rs: %ld\n", rs);
-        // printf("rt: %ld\n", rt);
-        // printf("l: %ld\n", l);
+        printf("opcode: %ld\n", opcode);
+        printf("rd: %ld\n", rd);
+        printf("rs: %ld\n", rs);
+        printf("rt: %ld\n", rt);
+        printf("l: %ld\n", l);
         if(opcode == 16 || opcode == 21 || opcode == 24){
             uint64_t sign = l & (1 << 11);
             sign = sign >> 11;
