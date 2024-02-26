@@ -1,4 +1,2 @@
 .code
-	push a31
-	
-	halt
+	push r31

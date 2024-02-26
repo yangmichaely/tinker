@@ -103,11 +103,11 @@ void firstPass(FILE* fp){
     for(int i = 0; i < lines; i++){
         char* buffer = (char*) calloc(512 * sizeof(char), 1);
         fgets(buffer, 512, fp);
-        if(strchr(buffer, '\n') == NULL){
-            fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
-            free(buffer);
-            exit(1);
-        }
+        // if(strchr(buffer, '\n') == NULL){
+        //     fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+        //     free(buffer);
+        //     exit(1);
+        // }
         buffer[strcspn(buffer, "\n")] = '\0';
         char c = buffer[0];
         if(c == '.'){
@@ -172,6 +172,11 @@ void firstPass(FILE* fp){
             exit(1);
         }
         free(buffer);
+    }
+    fseek(fp, -1, SEEK_END);
+    if(getc(fp) != '\n'){
+        fprintf(stderr, "%s%d\n", "Error on line ", lines + 1);
+        exit(1);
     }
 }
 
@@ -500,8 +505,6 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
     else if(cmdNum == 34){
         l = -8;
         l &= 0xfff;
-        printf("L: %lu\n", l);
-        printf("instr: %s\n", instruction);
         binInstruction = calcShifts(l, 0, instruction[1], 31, 24);
         fwrite(&binInstruction, sizeof(binInstruction), 1, out);
         binInstruction = calcShifts(8, 0, 0, 31, 3);
