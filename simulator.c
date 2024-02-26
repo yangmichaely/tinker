@@ -227,7 +227,7 @@ int readBinary(FILE* f){
         cpu.mem[nextMem] = binary;
         nextMem++;
     }
-    while(cpu.pc < nextMem && cpu.pc >= 0){
+    while(cpu.pc < MEM_SIZE && cpu.pc >= 0){
         for(int i = 0; i < 4; i++){
             if(memCheck(cpu.pc + i) != 0){
                 fprintf(stderr, "%s\n", "Simulation error");
