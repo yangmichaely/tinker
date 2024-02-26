@@ -14,8 +14,8 @@ char* VALID_COMMANDS[36] = {"add", "addi", "sub", "subi", "mul", "div", "and", "
 
 char* VALID_PARAMETERS[36] = {"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1])$",
 "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1])$", 
-"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [0-9]+|:[a-zA-Z0-9_-]+$", "^[-+]?[0-9]+|:[a-zA-Z0-9_-]+$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), \\(r([0-9]|1[0-9]|2[0-9]|3[0-1])\\)\\([-+]?[0-9]+|:[a-zA-Z0-9_-]+\\)$", 
-"^\\(r([0-9]|1[0-9]|2[0-9]|3[0-1])\\)\\([-+]?[0-9]+|:[a-zA-Z0-9_-]+\\), r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^[a-zA-Z0-9_-]+$"};
+"^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [0-9]+$", "^[-+]?[0-9]+$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), \\(r([0-9]|1[0-9]|2[0-9]|3[0-1])\\)\\([-+]?[0-9]+\\)$", 
+"^\\(r([0-9]|1[0-9]|2[0-9]|3[0-1])\\)\\([-+]?[0-9]+\\), r([0-9]|1[0-9]|2[0-9]|3[0-1])$", "^[a-zA-Z0-9_-]+$", "^r([0-9]|1[0-9]|2[0-9]|3[0-1]), [0-9]+|:[a-zA-Z0-9_-]+$"};
 
 int lines;
 int avail;
@@ -189,8 +189,7 @@ int checkValid(char* cmdName, char* cmdParams, int emptyParams){
             regfree(&regex);
             return 0;
     }
-    else if(strcmp(cmdName, "addi") == 0 || strcmp(cmdName, "subi") == 0 || strcmp(cmdName, "shftri") == 0 || strcmp(cmdName, "shftli") == 0 || 
-        strcmp(cmdName, "ld") == 0){
+    else if(strcmp(cmdName, "addi") == 0 || strcmp(cmdName, "subi") == 0 || strcmp(cmdName, "shftri") == 0 || strcmp(cmdName, "shftli") == 0){
             regex_t regex;
             regcomp(&regex, VALID_PARAMETERS[3], REG_EXTENDED);
             if(regexec(&regex, cmdParams, 0, NULL, 0) == 0){
@@ -199,6 +198,16 @@ int checkValid(char* cmdName, char* cmdParams, int emptyParams){
             }
             regfree(&regex);
             return 0;
+    }
+    else if(strcmp(cmdName, "ld") == 0){
+        regex_t regex;
+        regcomp(&regex, VALID_PARAMETERS[8], REG_EXTENDED);
+        if(regexec(&regex, cmdParams, 0, NULL, 0) == 0){
+            regfree(&regex);
+            return 1;
+        }
+        regfree(&regex);
+        return 0;
     }
     else if(strcmp(cmdName, "not") == 0 || strcmp(cmdName, "brnz") == 0 || strcmp(cmdName, "in") == 0 || strcmp(cmdName, "out") == 0){
         regex_t regex;
