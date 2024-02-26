@@ -1,3 +1,2 @@
 .code
 	pop r0
-	halt

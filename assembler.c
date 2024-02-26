@@ -96,13 +96,6 @@ void firstPass(FILE* fp){
             lines++;
         }
     }
-    fseek(fp, -1, SEEK_END);
-    //char a = getc(fp);
-    //printf("here: %c\n", a);
-    if(getc(fp) != '\n'){
-        fprintf(stderr, "%s%d\n", "Error on line ", lines + 1);
-        exit(1);
-    }
     rewind(fp);
     int data = 0;
     int code = 0;
@@ -179,8 +172,15 @@ void firstPass(FILE* fp){
         }
         free(buffer);
     }
-    if(code == 0){
-        fprintf(stderr, "%s\n", "Error on line 0");
+    // if(code == 0){
+    //     fprintf(stderr, "%s\n", "Error on line 0");
+    //     exit(1);
+    // }
+    fseek(fp, -1, SEEK_END);
+    //char a = getc(fp);
+    //printf("here: %c\n", a);
+    if(getc(fp) != '\n'){
+        fprintf(stderr, "%s%d\n", "Error on line ", lines + 1);
         exit(1);
     }
 }
