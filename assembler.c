@@ -42,6 +42,7 @@ int main(int argc, char** argv){
     outFile[strlen(argv[1])] = 'o';
     outFile[strlen(argv[1]) + 1] = '\0';
     read(fp, outFile);
+    exit(0);
     // free(outFile);
     // fclose(fp);
     // return 0;
