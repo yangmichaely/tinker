@@ -1,2 +1,3 @@
 .code
-	pop r0
+	pop r33
+	pop r5

@@ -48,138 +48,6 @@ int main(int argc, char** argv){
     // return 0;
 }
 
-void insert(char* name, int address, int nameLength){
-    if(head != NULL){
-        addr* lk = (addr*) malloc(sizeof(addr));
-        lk -> address = address;
-        lk -> name = (char*) malloc(sizeof(char) * (nameLength + 1));
-        strncpy(lk -> name, name, nameLength);
-        lk -> name[nameLength] = '\0';
-        lk -> next = head;
-        head = lk;
-    }
-    else{
-        head = (addr*) malloc (sizeof(addr));
-        head -> address = address;
-        head -> name = (char*) malloc(sizeof(char) * (nameLength + 1));
-        strcpy(head -> name, name);
-        head -> next = NULL;
-    }
-}
-
-int search(char* name){
-    addr *temp = head;
-    while(temp != NULL) {
-        if (strcmp(temp -> name, name) == 0) {
-            return temp -> address;
-        }
-        temp=temp->next;
-    }
-    return -1;
-}
-
-void freeList(addr* head){
-    addr* tmp;
-    while (head != NULL){
-        tmp = head;
-        head = head->next;
-        free(tmp -> name);
-        free(tmp);
-    }
-}
-
-void firstPass(FILE* fp){
-    avail = 0;
-    lines = 0;
-    int mem = 0;
-    for (char d = getc(fp); d != EOF; d = getc(fp)){
-        if (d == '\n'){
-            lines++;
-        }
-    }
-    rewind(fp);
-    int data = 0;
-    int code = 0;
-    for(int i = 0; i < lines; i++){
-        char* buffer = (char*) calloc(512 * sizeof(char), 1);
-        fgets(buffer, 512, fp);
-        // if(strchr(buffer, '\n') == NULL){
-        //     fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
-        //     free(buffer);
-        //     exit(1);
-        // }
-        buffer[strcspn(buffer, "\n")] = '\0';
-        char c = buffer[0];
-        if(c == '.'){
-            char* buff = strtok(buffer, ".");
-            if(strcmp(buff, "data") == 0){
-                data = 1;
-                code = 0;
-            }
-            else if(strcmp(buff, "code") == 0){
-                code = 1;
-                data = 0;
-            }
-            else{
-                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
-                freeList(head);
-                free(buffer);
-                exit(1);
-            }
-        }
-        else if(c == '\t'){
-            char* buff = strtok(buffer, "\t");
-            if(code == 1){
-                char* cmdName = (char*) calloc(256 * sizeof(char), 1);
-                int j = 0;
-                for(j = 0; buff[j] != ' ' && buff[j] != '\n' && buff[j] != '\0' && buff[j] != EOF; j++){
-                    cmdName[j] = buff[j];
-                }
-                if(strcmp(cmdName, "ld") == 0){
-                    mem += 48;
-                }
-                else if(strcmp(cmdName, "push") == 0 || strcmp(cmdName, "pop") == 0){
-                    mem += 8;
-                }
-                else{
-                    mem += 4;
-                }
-                free(cmdName);
-            }
-            else if(data == 1){
-                mem += 8;
-            }
-        }
-        else if(c == ':'){
-            char* name = strtok(buffer, ":");
-            int found = search(name);
-            regex_t regex;
-            regcomp(&regex, VALID_PARAMETERS[7], REG_EXTENDED);
-            if(strlen(name) > 255 || regexec(&regex, name, 0, NULL, 0) != 0 || found != -1){
-                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
-                regfree(&regex);
-                freeList(head);
-                free(buffer);
-                exit(1);
-            }
-            regfree(&regex);
-            insert(name, mem, strlen(name));
-        }
-        else if(c != ';'){
-            fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
-            freeList(head);
-            free(buffer);
-            exit(1);
-        }
-        free(buffer);
-    }
-    fseek(fp, -1, SEEK_END);
-    if(getc(fp) != '\n'){
-        fprintf(stderr, "%s%d\n", "Error on line ", lines + 1);
-        exit(1);
-    }
-}
-
 int checkValid(char* cmdName, char* cmdParams, int emptyParams){
     if(strcmp(cmdName, "add") == 0 || strcmp(cmdName, "sub") == 0 || strcmp(cmdName, "mul") == 0 || strcmp(cmdName, "div") == 0 || 
         strcmp(cmdName, "and") == 0 || strcmp(cmdName, "or") == 0 || strcmp(cmdName, "xor") == 0 || strcmp(cmdName, "shftr") == 0 ||
@@ -286,6 +154,228 @@ int checkValid(char* cmdName, char* cmdParams, int emptyParams){
     }
     else{
         return 0;
+    }
+}
+
+void insert(char* name, int address, int nameLength){
+    if(head != NULL){
+        addr* lk = (addr*) malloc(sizeof(addr));
+        lk -> address = address;
+        lk -> name = (char*) malloc(sizeof(char) * (nameLength + 1));
+        strncpy(lk -> name, name, nameLength);
+        lk -> name[nameLength] = '\0';
+        lk -> next = head;
+        head = lk;
+    }
+    else{
+        head = (addr*) malloc (sizeof(addr));
+        head -> address = address;
+        head -> name = (char*) malloc(sizeof(char) * (nameLength + 1));
+        strcpy(head -> name, name);
+        head -> next = NULL;
+    }
+}
+
+int search(char* name){
+    addr *temp = head;
+    while(temp != NULL) {
+        if (strcmp(temp -> name, name) == 0) {
+            return temp -> address;
+        }
+        temp=temp->next;
+    }
+    return -1;
+}
+
+void freeList(addr* head){
+    addr* tmp;
+    while (head != NULL){
+        tmp = head;
+        head = head->next;
+        free(tmp -> name);
+        free(tmp);
+    }
+}
+
+void firstPass(FILE* fp){
+    lines = 0;
+    for (char d = getc(fp); d != EOF; d = getc(fp)){
+        if (d == '\n'){
+            lines++;
+        }
+    }
+    rewind(fp);
+    int data = 0;
+    int code = 0;
+    avail = 0;
+    int emptyParams = 0;
+    int mem = 0;
+    for(int i = 0; i < lines; i++){
+        char* buffer = (char*) calloc (512 * sizeof(char), 1);
+        fgets(buffer, 512, fp);
+        buffer[strcspn(buffer, "\n")] = '\0';
+        char c = buffer[0];
+        if(c == '.'){
+            char* buff = strtok(buffer, ".");
+            if(strcmp(buff, "data") == 0){
+                data = 1;
+                code = 0;
+            }
+            else if(strcmp(buff, "code") == 0){
+                code = 1;
+                data = 0;
+            }
+            else{
+                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                freeList(head);
+                free(buffer);
+                exit(1);
+            }
+        }
+        else if(c == '\t'){
+            char* buff = strtok(buffer, "\t");
+            if(code == 1){
+                char* cmdName = (char*) calloc(256 * sizeof(char), 1);
+                int j = 0;
+                for(j = 0; buff[j] != ' ' && buff[j] != '\n' && buff[j] != '\0' && buff[j] != EOF; j++){
+                    cmdName[j] = buff[j];
+                }
+                int emptyParams = 1;
+                char* cmdParams = (char*) calloc(strlen(buff) * sizeof(char) - strlen(cmdName) * sizeof(char), 1);
+                for(int h = j + 1; h < strlen(buff) && buff[h] != '\n' && buff[h] != '\0'; h++){
+                    emptyParams = 0;
+                    cmdParams[h - j - 1] = buff[h];
+                }
+                int check = checkValid(cmdName, cmdParams, emptyParams);
+                if(check == 0){
+                    fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                    free(cmdParams);
+                    free(cmdName);
+                    free(buffer);
+                    freeList(head);
+                    exit(1);
+                }
+                if(strcmp(cmdName, "ld") == 0){
+                    mem += 48;
+                }
+                else if(strcmp(cmdName, "push") == 0 || strcmp(cmdName, "pop") == 0){
+                    mem += 8;
+                }
+                else{
+                    mem += 4;
+                }
+                free(cmdName);
+                free(cmdParams);
+            }
+            else if(data == 1){
+                for (int j = 0; j < strlen(buff); j++){
+                    if (!isdigit(buff[j])){
+                        fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                        free(buffer);
+                        freeList(head);
+                        exit(1);
+                    }
+                }
+                uint64_t max = 18446744073709551615ULL;
+                char *ptr;
+                uint64_t dataVal = strtoul(buff, &ptr, 10);
+                if(dataVal == max && !(strcmp(buff, "18446744073709551615") == 0)){
+                    fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                    free(buffer);
+                    freeList(head);
+                    exit(1);
+                }
+                mem += 8;
+            }
+        }
+        else if(c == ':'){
+            char* name = strtok(buffer, ":");
+            int found = search(name);
+            regex_t regex;
+            regcomp(&regex, VALID_PARAMETERS[7], REG_EXTENDED);
+            if(strlen(name) > 255 || regexec(&regex, name, 0, NULL, 0) != 0 || found != -1){
+                fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+                regfree(&regex);
+                freeList(head);
+                free(buffer);
+                exit(1);
+            }
+            regfree(&regex);
+            insert(name, mem, strlen(name));
+        }
+        else if(c != ';'){
+            fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+            freeList(head);
+            free(buffer);
+            exit(1);
+        }
+        free(buffer);
+    }
+    
+    
+    // for(int i = 0; i < lines; i++){
+    //     char* buffer = (char*) calloc(512 * sizeof(char), 1);
+    //     fgets(buffer, 512, fp);
+    //     // if(strchr(buffer, '\n') == NULL){
+    //     //     fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+    //     //     free(buffer);
+    //     //     exit(1);
+    //     // }
+    //     buffer[strcspn(buffer, "\n")] = '\0';
+    //     char c = buffer[0];
+    //     if(c == '.'){
+    //         char* buff = strtok(buffer, ".");
+    //         if(strcmp(buff, "data") == 0){
+    //             data = 1;
+    //             code = 0;
+    //         }
+    //         else if(strcmp(buff, "code") == 0){
+    //             code = 1;
+    //             data = 0;
+    //         }
+    //         else{
+    //             fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+    //             freeList(head);
+    //             free(buffer);
+    //             exit(1);
+    //         }
+    //     }
+    //     else if(c == '\t'){
+    //         char* buff = strtok(buffer, "\t");
+    //         if(code == 1){
+    //             char* cmdName = (char*) calloc(256 * sizeof(char), 1);
+    //             int j = 0;
+    //             for(j = 0; buff[j] != ' ' && buff[j] != '\n' && buff[j] != '\0' && buff[j] != EOF; j++){
+    //                 cmdName[j] = buff[j];
+    //             }
+    //             if(strcmp(cmdName, "ld") == 0){
+    //                 mem += 48;
+    //             }
+    //             else if(strcmp(cmdName, "push") == 0 || strcmp(cmdName, "pop") == 0){
+    //                 mem += 8;
+    //             }
+    //             else{
+    //                 mem += 4;
+    //             }
+    //             free(cmdName);
+    //         }
+    //         else if(data == 1){
+    //             mem += 8;
+    //         }
+    //     }
+        
+    //     else if(c != ';'){
+    //         fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+    //         freeList(head);
+    //         free(buffer);
+    //         exit(1);
+    //     }
+    //     free(buffer);
+    // }
+    fseek(fp, -1, SEEK_END);
+    if(getc(fp) != '\n'){
+        fprintf(stderr, "%s%d\n", "Error on line ", lines + 1);
+        exit(1);
     }
 }
 
