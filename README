@@ -1,1 +1,11 @@
-hello hello
+My testing suite contains around 72 input files - 2 for each test case (a .tk file and a .tko file).
+
+For the assembler, I use a bash script (assemblerTest.sh) that executes the assembler on each .tk
+file in the test suite. I create these .tk files myself, and they consist of 1-2 lines of code that 
+test each individual instruction. Furthermore, I can modify these files as I please in order to 
+check for edge cases, invalid cases, and correct cases.
+
+Finally, I use another bash script (simulatorTest.sh) that executes the assembler on each .tko
+file that was created by the assembler. In this way I can use blackbox testing to manually check
+the output of the simulator on each .tko file. Once again, I can modify the .tk file in order to
+test the output produced by the .tko file.

@@ -43,9 +43,6 @@ int main(int argc, char** argv){
     outFile[strlen(argv[1]) + 1] = '\0';
     read(fp, outFile);
     exit(0);
-    // free(outFile);
-    // fclose(fp);
-    // return 0;
 }
 
 int checkValid(char* cmdName, char* cmdParams, int emptyParams){
@@ -311,67 +308,6 @@ void firstPass(FILE* fp){
         }
         free(buffer);
     }
-    
-    
-    // for(int i = 0; i < lines; i++){
-    //     char* buffer = (char*) calloc(512 * sizeof(char), 1);
-    //     fgets(buffer, 512, fp);
-    //     // if(strchr(buffer, '\n') == NULL){
-    //     //     fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
-    //     //     free(buffer);
-    //     //     exit(1);
-    //     // }
-    //     buffer[strcspn(buffer, "\n")] = '\0';
-    //     char c = buffer[0];
-    //     if(c == '.'){
-    //         char* buff = strtok(buffer, ".");
-    //         if(strcmp(buff, "data") == 0){
-    //             data = 1;
-    //             code = 0;
-    //         }
-    //         else if(strcmp(buff, "code") == 0){
-    //             code = 1;
-    //             data = 0;
-    //         }
-    //         else{
-    //             fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
-    //             freeList(head);
-    //             free(buffer);
-    //             exit(1);
-    //         }
-    //     }
-    //     else if(c == '\t'){
-    //         char* buff = strtok(buffer, "\t");
-    //         if(code == 1){
-    //             char* cmdName = (char*) calloc(256 * sizeof(char), 1);
-    //             int j = 0;
-    //             for(j = 0; buff[j] != ' ' && buff[j] != '\n' && buff[j] != '\0' && buff[j] != EOF; j++){
-    //                 cmdName[j] = buff[j];
-    //             }
-    //             if(strcmp(cmdName, "ld") == 0){
-    //                 mem += 48;
-    //             }
-    //             else if(strcmp(cmdName, "push") == 0 || strcmp(cmdName, "pop") == 0){
-    //                 mem += 8;
-    //             }
-    //             else{
-    //                 mem += 4;
-    //             }
-    //             free(cmdName);
-    //         }
-    //         else if(data == 1){
-    //             mem += 8;
-    //         }
-    //     }
-        
-    //     else if(c != ';'){
-    //         fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
-    //         freeList(head);
-    //         free(buffer);
-    //         exit(1);
-    //     }
-    //     free(buffer);
-    // }
     fseek(fp, -1, SEEK_END);
     if(getc(fp) != '\n'){
         fprintf(stderr, "%s%d\n", "Error on line ", lines + 1);
@@ -505,10 +441,8 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
             if(cmdParams[x] == ' '){
                 x++;
             }
-            //printf("tmp: %s\n", tmp);
             if(strchr(tmp, 'r') != NULL){
                 char* reg = strtok(tmp, "r");
-                //printf("regnumber: %s\n", reg);
                 char* ptr;
                 uint32_t regNum = strtoul(reg, &ptr, 10);
                 instruction[nextReg] = regNum;
@@ -524,13 +458,6 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
                 l = labelAddr;
             }
             else{
-                // regex_t regex;
-                // regcomp(&regex, "^[-+]?[0-9]+$", REG_EXTENDED);
-                // if(regexec(&regex, cmdParams, 0, NULL, 0) == 0){
-                //     regfree(&regex);
-                //     return -1;
-                // }
-                // regfree(&regex);
                 char *ptr;
                 l = strtoul(tmp, &ptr, 10);
                 if(cmdNum == 16 || cmdNum == 21 || cmdNum == 24){
