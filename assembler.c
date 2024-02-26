@@ -500,6 +500,8 @@ int splitter(char* cmdParams, uint16_t cmdNum, int emptyParams, FILE* out){
     else if(cmdNum == 34){
         l = -8;
         l &= 0xfff;
+        printf("L: %lu\n", l);
+        printf("instr: %s\n", instruction);
         binInstruction = calcShifts(l, 0, instruction[1], 31, 24);
         fwrite(&binInstruction, sizeof(binInstruction), 1, out);
         binInstruction = calcShifts(8, 0, 0, 31, 3);
