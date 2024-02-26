@@ -102,7 +102,7 @@ void firstPass(FILE* fp){
     for(int i = 0; i < lines; i++){
         char* buffer = (char*) calloc(512 * sizeof(char), 1);
         fgets(buffer, 512, fp);
-        if(strchr(buffer, '\n') == NULL){
+        if(!(strchr(buffer, '\n') > -1)){
             fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
             free(buffer);
             exit(1);
