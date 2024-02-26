@@ -179,6 +179,10 @@ void firstPass(FILE* fp){
         }
         free(buffer);
     }
+    if(code == 0){
+        fprintf(stderr, "%s\n", "Error on line 0");
+        exit(1);
+    }
 }
 
 int checkValid(char* cmdName, char* cmdParams, int emptyParams){
