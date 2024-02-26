@@ -120,7 +120,7 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
             if(memCheck(cpu.regs[31].uinteger64 - 8) != 0){
                 return -1;
             }
-            cpu.mem[cpu.regs[31].uinteger64 - 8] = cpu.pc + 4;
+            *(uint64_t*)(&cpu.mem[cpu.regs[31].uinteger64 - 8]) = cpu.pc + 4;
             cpu.pc = cpu.regs[rd].uinteger64;
             return 0;
         case 19:
