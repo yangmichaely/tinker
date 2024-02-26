@@ -102,11 +102,11 @@ void firstPass(FILE* fp){
     for(int i = 0; i < lines; i++){
         char* buffer = (char*) calloc(512 * sizeof(char), 1);
         fgets(buffer, 512, fp);
-        // if(strchr(buffer, '\n') != NULL){
-        //     fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
-        //     free(buffer);
-        //     exit(1);
-        // }
+        if(strchr(buffer, '\n') == NULL){
+            fprintf(stderr, "%s%d\n", "Error on line ", i + 1);
+            free(buffer);
+            exit(1);
+        }
         buffer[strcspn(buffer, "\n")] = '\0';
         char c = buffer[0];
         if(c == '.'){
@@ -171,17 +171,6 @@ void firstPass(FILE* fp){
             exit(1);
         }
         free(buffer);
-    }
-    // if(code == 0){
-    //     fprintf(stderr, "%s\n", "Error on line 0");
-    //     exit(1);
-    // }
-    fseek(fp, -1, SEEK_END);
-    //char a = getc(fp);
-    //printf("here: %c\n", a);
-    if(getc(fp) != '\n'){
-        fprintf(stderr, "%s%d\n", "Error on line ", lines + 1);
-        exit(1);
     }
 }
 
