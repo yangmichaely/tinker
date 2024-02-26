@@ -230,7 +230,7 @@ int readBinary(FILE* f){
     while(cpu.pc < MEM_SIZE && cpu.pc >= 0){
         for(int i = 0; i < 4; i++){
             if(memCheck(cpu.pc + i) != 0){
-                fprintf(stderr, "%s\n", "bSimulation error");
+                fprintf(stderr, "%s\n", "Simulation error");
                 exit(-1);
             }
         }
@@ -244,11 +244,11 @@ int readBinary(FILE* f){
         uint64_t rs = (instr >> 17) & 0x1f;
         uint64_t rt = (instr >> 12) & 0x1f;
         uint64_t l = instr & 0xfff;
-        printf("opcode: %ld\n", opcode);
-        printf("rd: %ld\n", rd);
-        printf("rs: %ld\n", rs);
-        printf("rt: %ld\n", rt);
-        printf("l: %ld\n", l);
+        // printf("opcode: %ld\n", opcode);
+        // printf("rd: %ld\n", rd);
+        // printf("rs: %ld\n", rs);
+        // printf("rt: %ld\n", rt);
+        // printf("l: %ld\n", l);
         if(opcode == 16 || opcode == 21 || opcode == 24){
             uint64_t sign = l & (1 << 11);
             sign = sign >> 11;
@@ -258,13 +258,13 @@ int readBinary(FILE* f){
         }
         check = interpret(opcode, rd, rs, rt, l);
         if(check == -1){
-            fprintf(stderr, "%s\n", "aSimulation error");
+            fprintf(stderr, "%s\n", "Simulation error");
             exit(-1);
         }
         if(check == 1){
             exit(0);
         }
     }
-    fprintf(stderr, "%s\n", "cSimulation error");
+    fprintf(stderr, "%s\n", "Simulation error");
     exit(1);
 }
