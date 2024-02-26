@@ -244,6 +244,11 @@ int readBinary(FILE* f){
         uint64_t rs = (instr >> 17) & 0x1f;
         uint64_t rt = (instr >> 12) & 0x1f;
         uint64_t l = instr & 0xfff;
+        printf("opcode: %ld\n", opcode);
+        printf("rd: %ld\n", rd);
+        printf("rs: %ld\n", rs);
+        printf("rt: %ld\n", rt);
+        printf("l: %ld\n", l);
         if(opcode == 16 || opcode == 21 || opcode == 24){
             uint64_t sign = l & (1 << 11);
             sign = sign >> 11;
