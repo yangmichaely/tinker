@@ -192,13 +192,13 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
             return 0;
         case 29:
             if(cpu.regs[rs].uinteger64 == 0){
-                scanf("%lu\n", &cpu.regs[rd].uinteger64);
+                scanf("%llu", &cpu.regs[rd].uinteger64);
                 cpu.pc += 4;
             }
             return 0;
         case 30:
             if(cpu.regs[rd].uinteger64 == 1){
-                printf("%lu", cpu.regs[rs].uinteger64);
+                printf("%lu\n", cpu.regs[rs].uinteger64);
                 cpu.pc += 4;
             }
             return 0;
