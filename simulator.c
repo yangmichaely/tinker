@@ -260,5 +260,6 @@ int readBinary(FILE* f){
             exit(0);
         }
     }
-    return 0;
+    fprintf(stderr, "%s\n", "Simulation error");
+    exit(1);
 }
