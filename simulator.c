@@ -32,7 +32,7 @@ int main(int argc, char** argv){
 }
 
 int memCheck(uint64_t index){
-    if(index < 0 || index >= MEM_SIZE || index >= nextMem){
+    if(index < 0 || index >= MEM_SIZE){
         return -1;
     }
     return 0;
