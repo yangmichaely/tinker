@@ -191,16 +191,16 @@ int interpret(uint64_t opcode, uint64_t rd, uint64_t rs, uint64_t rt, uint64_t l
             cpu.pc += 4;
             return 0;
         case 29:
-            if(cpu.regs[rs].uinteger64 == 0){
+            //if(cpu.regs[rs].uinteger64 == 0){
                 scanf("%lu", &cpu.regs[rd].uinteger64);
                 cpu.pc += 4;
-            }
+            //}
             return 0;
         case 30:
-            if(cpu.regs[rd].uinteger64 == 1){
+            //if(cpu.regs[rd].uinteger64 == 1){
                 printf("%lu\n", cpu.regs[rs].uinteger64);
                 cpu.pc += 4;
-            }
+            //}
             return 0;
         case 31:
             cpu.pc += 4;
